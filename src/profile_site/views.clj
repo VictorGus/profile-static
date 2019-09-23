@@ -43,10 +43,12 @@
     :else "/assets/icon_primitive.png"))
 
 (defn set-last-item-img [items]
+  (for [item items] (println item))
   (assoc-in items [(.indexOf items (last items)) 1 1 2 1 :src] "/assets/tbl_vjoin_end.png"))
 
 (defn set-last-inner-item-img [items]
-  (assoc-in items [(.indexOf items (last items)) 1 3 1 :src] "/assets/tbl_vjoin_end.png"))
+  (when (> (count items) 0)
+    (assoc-in items [(.indexOf items (last items)) 1 3 1 :src] "/assets/tbl_vjoin_end.png")))
 
 (defn profile-page [{resourceType :resourceType :as resource}]
   (layout resourceType [:style (pss/style pss/profile-style)]
@@ -72,9 +74,12 @@
                                                                                                                 [:img {:src (get-icon [:attrs item] resource)
                                                                                                                        :class "table-icon"}]
                                                                                                                 [:a item]]
-                                                                                                               [:td {:class "line-item"} "?"]
-                                                                                                               [:td {:class "line-item"} (get-cardinality [item] resource)]
-                                                                                                               [:td {:class "line-item"}  "?"]
+                                                                                                                [:td {:class "line-item"}
+                                                                                                                 "?"]
+                                                                                                                [:td {:class "line-item"}
+                                                                                                                 (get-cardinality [item] resource)]
+                                                                                                                [:td {:class "line-item"}
+                                                                                                                 "?"]
                                                                                                                [:td {:class "line-item"} [:a (-> resource
                                                                                                                                                  (:attrs)
                                                                                                                                                  (get item)
@@ -93,9 +98,12 @@
                                                                                                                                                 [:img {:src (get-icon [:attrs item inner] resource)
                                                                                                                                                        :class "table-icon"}]
                                                                                                                                                 inner]
-                                                                                                                                               [:td {:class "line-item"} "?"]
-                                                                                                                                               [:td {:class "line-item"} (get-cardinality [item :attrs inner] resource)]
-                                                                                                                                               [:td {:class "line-item"} "?"]
+                                                                                                                                               [:td {:class "line-item"}
+                                                                                                                                                "?"]
+                                                                                                                                               [:td {:class "line-item"}
+                                                                                                                                                (get-cardinality [item :attrs inner] resource)]
+                                                                                                                                               [:td {:class "line-item"}
+                                                                                                                                                "?"]
                                                                                                                                                [:td {:class "line-item"} [:a (-> resource
                                                                                                                                                                                  (:attrs)
                                                                                                                                                                                  (get item)
