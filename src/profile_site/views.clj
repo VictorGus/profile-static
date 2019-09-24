@@ -8,7 +8,7 @@
             [:head
              [:meta {:charset "utf-8"}]
              [:title title]]
-            content]))
+            [:body content]]))
 
 (defn attr-required? [attr profile]
   (get-in profile (vec (cons :attrs (-> attr
@@ -48,14 +48,14 @@
     (-> items
         (assoc-in [(.indexOf items last-item)] (->> last-item
                                                     (filter #(if (= (get-in % [1 1 :class]) "line-inner-item") %))
-                                                    (map #(assoc-in % [1 2 1 :src] "/assets/tbl_blank.png"))
+                                                    (map #(assoc-in % [1 3 1 :src] "/assets/tbl_blank.png"))
                                                     (concat [:tbody outer-item])
                                                     (vec)))
-        (assoc-in [(.indexOf items last-item) 1 1 2 1 :src] "/assets/tbl_vjoin_end.png"))))
+        (assoc-in [(.indexOf items last-item) 1 1 3 1 :src] "/assets/tbl_vjoin_end.png"))))
 
 (defn set-last-inner-item-img [items]
   (when (> (count items) 0)
-    (assoc-in items [(.indexOf items (last items)) 1 3 1 :src] "/assets/tbl_vjoin_end.png")))
+    (assoc-in items [(.indexOf items (last items)) 1 4 1 :src] "/assets/tbl_vjoin_end.png")))
 
 (defn profile-page [{resourceType :resourceType :as resource}]
   (layout resourceType [:style (pss/style pss/profile-style)]
@@ -68,7 +68,7 @@
                      [:th "Тип"]
                      [:th "Описание и ограничения"]]
                     [:tr
-                     [:td {:class "line-item"}
+                     [:td {:class "line-item-resource-type"}
                       [:img {:src "/assets/icon_element.gif"
                              :style "vertical-align: top"}]
                       (get resource :resourceType)]
@@ -77,6 +77,8 @@
                   (concat (set-last-item-img (vec (for [item (vec (keys (:attrs resource)))]
                                                     (vec (-> [:tbody [:tr
                                                                       [:td {:class "line-item"}
+                                                                       [:img {:src "/assets/tbl_spacer.png"
+                                                                              :style "vertical-align: top"}]
                                                                        [:img {:src "/assets/tbl_vjoin.png"
                                                                               :style "vertical-align: top"}]
                                                                        [:img {:src (get-icon [:attrs item] resource)
@@ -99,6 +101,8 @@
                                                                                                                     (vec))]
                                                                                                      [:tr
                                                                                                       [:td {:class "line-inner-item"}
+                                                                                                       [:img {:src "/assets/tbl_spacer.png"
+                                                                                                              :style "vertical-align: top"}]
                                                                                                        [:img {:src "/assets/tbl_vline.png"
                                                                                                               :style "vertical-align: top"}]
                                                                                                        [:img {:src "/assets/tbl_vjoin.png"

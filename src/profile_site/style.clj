@@ -7,19 +7,28 @@
 (def profile-style [[:.line-item
                      {:vertical-align "top"
                       :text-align "left"
+                      :padding "0px 4px 0px 4px"
+                      :background-color "white"}]
+
+                    [:.line-item-resource-type
+                     {:vertical-align "top"
+                      :text-align "left"
                       :padding "0px 4px 0px 4px"}]
-                    
+
                     [:.line-inner-item
                      {:vertical-align "top"
                       :text-align "left"
                       :padding "0px 4px 0px 4px"}]
-                    
+
                     [:table
                      {:font-size "11px"
                       :font-family "verdana"
                       :max-width "100%"
                       :border-spacing "0"
                       :border-collapse "collapse"}]
+
+                    [:line-item
+                     ]
 
                     [:tr
                      {:border "0px"
