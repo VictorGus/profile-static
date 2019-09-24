@@ -8,7 +8,12 @@
                      {:vertical-align "top"
                       :text-align "left"
                       :padding "0px 4px 0px 4px"}]
-
+                    
+                    [:.line-inner-item
+                     {:vertical-align "top"
+                      :text-align "left"
+                      :padding "0px 4px 0px 4px"}]
+                    
                     [:table
                      {:font-size "11px"
                       :font-family "verdana"

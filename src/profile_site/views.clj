@@ -34,7 +34,7 @@
 
 (defn get-icon [attr profile]
   (cond
-    (or (= (last attr) :address) (= (last attr) :identifier))
+    (or (= (last attr) :address) (= (last attr) :identifier) (= (last attr) :name))
     "/assets/icon_datatype.gif"
     (-> profile
         (get-in attr)
@@ -43,8 +43,15 @@
     :else "/assets/icon_primitive.png"))
 
 (defn set-last-item-img [items]
-  (for [item items] (println item))
-  (assoc-in items [(.indexOf items (last items)) 1 1 2 1 :src] "/assets/tbl_vjoin_end.png"))
+  (let [last-item (last items)
+        outer-item (nth (last items) 1)]
+    (-> items
+        (assoc-in [(.indexOf items last-item)] (->> last-item
+                                                    (filter #(if (= (get-in % [1 1 :class]) "line-inner-item") %))
+                                                    (map #(assoc-in % [1 2 1 :src] "/assets/tbl_blank.png"))
+                                                    (concat [:tbody outer-item])
+                                                    (vec)))
+        (assoc-in [(.indexOf items last-item) 1 1 2 1 :src] "/assets/tbl_vjoin_end.png"))))
 
 (defn set-last-inner-item-img [items]
   (when (> (count items) 0)
@@ -67,47 +74,48 @@
                       (get resource :resourceType)]
                      [:td {:class "line-item"} "?"]
                      [:td {:class "line-item"} "0..*"]]]]
-                  (concat (set-last-item-img (vec (for [item (vec (keys (:attrs resource)))]  (vec (-> [:tbody [:tr
-                                                                                                               [:td {:class "line-item"}
-                                                                                                                [:img {:src "/assets/tbl_vjoin.png"
-                                                                                                                       :style "vertical-align: top"}]
-                                                                                                                [:img {:src (get-icon [:attrs item] resource)
-                                                                                                                       :class "table-icon"}]
-                                                                                                                [:a item]]
-                                                                                                                [:td {:class "line-item"}
-                                                                                                                 "?"]
-                                                                                                                [:td {:class "line-item"}
-                                                                                                                 (get-cardinality [item] resource)]
-                                                                                                                [:td {:class "line-item"}
-                                                                                                                 "?"]
-                                                                                                               [:td {:class "line-item"} [:a (-> resource
-                                                                                                                                                 (:attrs)
-                                                                                                                                                 (get item)
-                                                                                                                                                 (get :desc))]]]]
-                                                                                                       (concat (set-last-inner-item-img (vec (for [inner (->> item
-                                                                                                                                                             (get (:attrs resource))
-                                                                                                                                                             (:attrs)
-                                                                                                                                                             (keys)
-                                                                                                                                                             (vec))]
-                                                                                                                                              [:tr
-                                                                                                                                               [:td {:class "line-item"}
-                                                                                                                                                [:img {:src "/assets/tbl_vline.png"
-                                                                                                                                                       :style "vertical-align: top"}]
-                                                                                                                                                [:img {:src "/assets/tbl_vjoin.png"
-                                                                                                                                                       :style "vertical-align: top"}]
-                                                                                                                                                [:img {:src (get-icon [:attrs item inner] resource)
-                                                                                                                                                       :class "table-icon"}]
-                                                                                                                                                inner]
-                                                                                                                                               [:td {:class "line-item"}
-                                                                                                                                                "?"]
-                                                                                                                                               [:td {:class "line-item"}
-                                                                                                                                                (get-cardinality [item :attrs inner] resource)]
-                                                                                                                                               [:td {:class "line-item"}
-                                                                                                                                                "?"]
-                                                                                                                                               [:td {:class "line-item"} [:a (-> resource
-                                                                                                                                                                                 (:attrs)
-                                                                                                                                                                                 (get item)
-                                                                                                                                                                                 (:attrs)
-                                                                                                                                                                                 (get inner)
-                                                                                                                                                                                 (get :desc))]]]))))))))))
+                  (concat (set-last-item-img (vec (for [item (vec (keys (:attrs resource)))]
+                                                    (vec (-> [:tbody [:tr
+                                                                      [:td {:class "line-item"}
+                                                                       [:img {:src "/assets/tbl_vjoin.png"
+                                                                              :style "vertical-align: top"}]
+                                                                       [:img {:src (get-icon [:attrs item] resource)
+                                                                              :class "table-icon"}]
+                                                                       [:a item]]
+                                                                      [:td {:class "line-item"}
+                                                                       "?"]
+                                                                      [:td {:class "line-item"}
+                                                                       (get-cardinality [item] resource)]
+                                                                      [:td {:class "line-item"}
+                                                                       "?"]
+                                                                      [:td {:class "line-item"} [:a (-> resource
+                                                                                                        (:attrs)
+                                                                                                        (get item)
+                                                                                                        (get :desc))]]]]
+                                                             (concat (set-last-inner-item-img (vec (for [inner (->> item
+                                                                                                                    (get (:attrs resource))
+                                                                                                                    (:attrs)
+                                                                                                                    (keys)
+                                                                                                                    (vec))]
+                                                                                                     [:tr
+                                                                                                      [:td {:class "line-inner-item"}
+                                                                                                       [:img {:src "/assets/tbl_vline.png"
+                                                                                                              :style "vertical-align: top"}]
+                                                                                                       [:img {:src "/assets/tbl_vjoin.png"
+                                                                                                              :style "vertical-align: top"}]
+                                                                                                       [:img {:src (get-icon [:attrs item inner] resource)
+                                                                                                              :class "table-icon"}]
+                                                                                                       inner]
+                                                                                                      [:td {:class "line-item"}
+                                                                                                       "?"]
+                                                                                                      [:td {:class "line-item"}
+                                                                                                       (get-cardinality [item :attrs inner] resource)]
+                                                                                                      [:td {:class "line-item"}
+                                                                                                       "?"]
+                                                                                                      [:td {:class "line-item"} [:a (-> resource
+                                                                                                                                        (:attrs)
+                                                                                                                                        (get item)
+                                                                                                                                        (:attrs)
+                                                                                                                                        (get inner)
+                                                                                                                                        (get :desc))]]]))))))))))
                   (vec))))
