@@ -52,7 +52,8 @@
                                                     (concat [:tbody outer-item])
                                                     (vec)))
         (assoc-in [(.indexOf items last-item) 1 1 3 1 :src] "/assets/tbl_vjoin_end.png")
-        (assoc-in [(.indexOf items last-item) 1 1 1 :style] "background-image: url(/assets/tbl_bck010.png)"))))
+        (assoc-in [(.indexOf items last-item) 1 1 1 :style] (when (> (count (rest last-item)) 1)
+                                                              "background-image: url(/assets/tbl_bck010.png)")))))
 
 (defn set-last-inner-item-img [items]
   (when (> (count items) 0)

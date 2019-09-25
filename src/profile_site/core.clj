@@ -14,8 +14,6 @@
 (defn get-data [path]
   (slurp (io/resource path)))
 
-(hc/html [:html [:head] [:body [:h1 "hello world"]]])
-
 (def patient-profile (yaml/parse-string (get-data "Patient.yaml")))
 
 (defn patient-page [request]
