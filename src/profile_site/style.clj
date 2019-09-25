@@ -24,12 +24,16 @@
                      {:font-size "11px"
                       :font-family "verdana"
                       :max-width "100%"
-                      :border-spacing "0"
+                      :border-spacing "0px"
                       :border-collapse "collapse"}]
 
-                    [:tr
+                    [:tr>td
                      {:border "0px"
-                      :vertical-align "top"}]
+                      :vertical-align "top"
+                      :padding-bottom "10px"}]
+
+                    [:td
+                     {:line-height "1em"}]
 
                     [:tbody
                      {:display "table-row-group"}]
@@ -40,7 +44,7 @@
                       :color "white"
                       :background-color "red"}]
 
-                    [:th 
+                    [:th
                      {:vertical-align "top"
                       :text-align "left"
                       :background-color "white"

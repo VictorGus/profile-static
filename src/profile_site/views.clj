@@ -109,7 +109,8 @@
                                                                           [:td {:class "line-item"
                                                                                 :style "opacity: 0.4"}
                                                                            card]))
-                                                                      [:td {:class "line-item"}
+                                                                      [:td {:class "line-item"
+                                                                            :style "opacity: 0.4"}
                                                                        (get-type [item] resource)]
                                                                       [:td {:class "line-item"} [:a (-> resource
                                                                                                         (:attrs)
@@ -141,7 +142,8 @@
                                                                                                           [:td {:class "line-item"
                                                                                                                 :style "opacity: 0.4"}
                                                                                                            card]))
-                                                                                                      [:td {:class "line-item"}
+                                                                                                      [:td {:class "line-item"
+                                                                                                            :style "opacity: 0.4"}
                                                                                                        (get-type [item :attrs inner] resource)]
                                                                                                       [:td {:class "line-item"} [:a (-> resource
                                                                                                                                         (:attrs)
