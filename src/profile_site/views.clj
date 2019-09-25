@@ -51,7 +51,8 @@
                                                     (map #(assoc-in % [1 3 1 :src] "/assets/tbl_blank.png"))
                                                     (concat [:tbody outer-item])
                                                     (vec)))
-        (assoc-in [(.indexOf items last-item) 1 1 3 1 :src] "/assets/tbl_vjoin_end.png"))))
+        (assoc-in [(.indexOf items last-item) 1 1 3 1 :src] "/assets/tbl_vjoin_end.png")
+        (assoc-in [(.indexOf items last-item) 1 1 1 :style] "background-image: url(/assets/tbl_bck010.png)"))))
 
 (defn set-last-inner-item-img [items]
   (when (> (count items) 0)
@@ -76,8 +77,10 @@
                      [:td {:class "line-item"} "0..*"]]]]
                   (concat (set-last-item-img (vec (for [item (vec (keys (:attrs resource)))]
                                                     (vec (-> [:tbody [:tr
-                                                                      [:td (assoc {:class "line-item"} :style (when (->> item (get (:attrs resource)) (:attrs))
-                                                                                                                "background-image: url(/assets/tbl_bck010.png)"))
+                                                                      [:td (assoc {:class "line-item"} :style (when (->> item
+                                                                                                                         (get (:attrs resource))
+                                                                                                                         (:attrs))
+                                                                                                                "background-image: url(/assets/tbl_bck11.png)"))
                                                                        [:img {:src "/assets/tbl_spacer.png"
                                                                               :style "vertical-align: top;
                                                                                       background-color: white;"}]
