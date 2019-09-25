@@ -75,7 +75,8 @@
                              :style "vertical-align: top"}]
                       (get resource :resourceType)]
                      [:td {:class "line-item"} "?"]
-                     [:td {:class "line-item"} "0..*"]]]]
+                     [:td {:class "line-item"
+                           :style "opacity: 0.4"} "0..*"]]]]
                   (concat (set-last-item-img (vec (for [item (vec (keys (:attrs resource)))]
                                                     (vec (-> [:tbody [:tr
                                                                       [:td (assoc {:class "line-item"} :style (when (->> item
@@ -92,8 +93,13 @@
                                                                        [:a item]]
                                                                       [:td {:class "line-item"}
                                                                        "?"]
-                                                                      [:td {:class "line-item"}
-                                                                       (get-cardinality [item] resource)]
+                                                                      (let [card (get-cardinality [item] resource)]
+                                                                        (if (or (= card "1..1") (= card "1..*"))
+                                                                          [:td {:class "line-item"}
+                                                                           card]
+                                                                          [:td {:class "line-item"
+                                                                                :style "opacity: 0.4"}
+                                                                           card]))
                                                                       [:td {:class "line-item"}
                                                                        "?"]
                                                                       [:td {:class "line-item"} [:a (-> resource
@@ -118,8 +124,13 @@
                                                                                                        inner]
                                                                                                       [:td {:class "line-item"}
                                                                                                        "?"]
-                                                                                                      [:td {:class "line-item"}
-                                                                                                       (get-cardinality [item :attrs inner] resource)]
+                                                                                                      (let [card (get-cardinality [item] resource)]
+                                                                                                        (if (or (= card "1..1") (= card "1..*"))
+                                                                                                          [:td {:class "line-item"}
+                                                                                                           card]
+                                                                                                          [:td {:class "line-item"
+                                                                                                                :style "opacity: 0.4"}
+                                                                                                           card]))
                                                                                                       [:td {:class "line-item"}
                                                                                                        "?"]
                                                                                                       [:td {:class "line-item"} [:a (-> resource
