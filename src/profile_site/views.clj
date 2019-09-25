@@ -32,6 +32,11 @@
       "0..1")
     :else nil))
 
+(defn get-type [attr profile]
+  (get-in profile (vec (cons :attrs (-> attr
+                                        (concat [:type])
+                                        (vec))))))
+
 (defn get-icon [attr profile]
   (cond
     (or (= (last attr) :address) (= (last attr) :identifier) (= (last attr) :name))
@@ -63,7 +68,10 @@
   (layout resourceType [:style (pss/style pss/profile-style)]
               (-> [:table
                    [:tbody
-                    [:tr
+                    [:tr {:style "border: 1px #F0F0F0 solid;
+                                  font-size: 11px;
+                                  font-family: verdana;
+                                  vertical-align: top;"}
                      [:th "Имя"]
                      [:th "Флаги"]
                      [:th "Кард."]
@@ -74,7 +82,7 @@
                       [:img {:src "/assets/icon_element.gif"
                              :style "vertical-align: top"}]
                       (get resource :resourceType)]
-                     [:td {:class "line-item"} "?"]
+                     [:td {:class "line-item"} ""]
                      [:td {:class "line-item"
                            :style "opacity: 0.4"} "0..*"]]]]
                   (concat (set-last-item-img (vec (for [item (vec (keys (:attrs resource)))]
@@ -92,7 +100,8 @@
                                                                               :class "table-icon"}]
                                                                        [:a item]]
                                                                       [:td {:class "line-item"}
-                                                                       "?"]
+                                                                       [:span {:class "flag-item"}
+                                                                        "S"]]
                                                                       (let [card (get-cardinality [item] resource)]
                                                                         (if (or (= card "1..1") (= card "1..*"))
                                                                           [:td {:class "line-item"}
@@ -101,7 +110,7 @@
                                                                                 :style "opacity: 0.4"}
                                                                            card]))
                                                                       [:td {:class "line-item"}
-                                                                       "?"]
+                                                                       (get-type [item] resource)]
                                                                       [:td {:class "line-item"} [:a (-> resource
                                                                                                         (:attrs)
                                                                                                         (get item)
@@ -123,8 +132,9 @@
                                                                                                               :class "table-icon"}]
                                                                                                        inner]
                                                                                                       [:td {:class "line-item"}
-                                                                                                       "?"]
-                                                                                                      (let [card (get-cardinality [item] resource)]
+                                                                                                       [:span {:class "flag-item"}
+                                                                                                        "S"]]
+                                                                                                      (let [card (get-cardinality [item :attrs inner] resource)]
                                                                                                         (if (or (= card "1..1") (= card "1..*"))
                                                                                                           [:td {:class "line-item"}
                                                                                                            card]
@@ -132,7 +142,7 @@
                                                                                                                 :style "opacity: 0.4"}
                                                                                                            card]))
                                                                                                       [:td {:class "line-item"}
-                                                                                                       "?"]
+                                                                                                       (get-type [item :attrs inner] resource)]
                                                                                                       [:td {:class "line-item"} [:a (-> resource
                                                                                                                                         (:attrs)
                                                                                                                                         (get item)

@@ -34,6 +34,19 @@
                     [:tbody
                      {:display "table-row-group"}]
 
+                    [:.flag-item
+                     {:padding-left "3px"
+                      :padding-right "3px"
+                      :color "white"
+                      :background-color "red"}]
+
+                    [:th 
+                     {:vertical-align "top"
+                      :text-align "left"
+                      :background-color "white"
+                      :border "0px #F0F0F0 solid"
+                      :padding "0px 4px 0px 4px"}]
+
                     [:.table-icon
                      {:vertical-align "top"
                       :margin "0px 2px 0px 0px"
