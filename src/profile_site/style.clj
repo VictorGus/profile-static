@@ -27,9 +27,6 @@
                       :border-spacing "0"
                       :border-collapse "collapse"}]
 
-                    [:line-item
-                     ]
-
                     [:tr
                      {:border "0px"
                       :vertical-align "top"}]
@@ -39,4 +36,5 @@
 
                     [:.table-icon
                      {:vertical-align "top"
-                      :margin "0px 2px 0px 0px"}]])
+                      :margin "0px 2px 0px 0px"
+                      :background-color "white"}]])

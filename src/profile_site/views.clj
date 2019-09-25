@@ -76,9 +76,11 @@
                      [:td {:class "line-item"} "0..*"]]]]
                   (concat (set-last-item-img (vec (for [item (vec (keys (:attrs resource)))]
                                                     (vec (-> [:tbody [:tr
-                                                                      [:td {:class "line-item"}
+                                                                      [:td (assoc {:class "line-item"} :style (when (->> item (get (:attrs resource)) (:attrs))
+                                                                                                                "background-image: url(/assets/tbl_bck010.png)"))
                                                                        [:img {:src "/assets/tbl_spacer.png"
-                                                                              :style "vertical-align: top"}]
+                                                                              :style "vertical-align: top;
+                                                                                      background-color: white;"}]
                                                                        [:img {:src "/assets/tbl_vjoin.png"
                                                                               :style "vertical-align: top"}]
                                                                        [:img {:src (get-icon [:attrs item] resource)
