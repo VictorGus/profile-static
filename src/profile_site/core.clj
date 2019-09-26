@@ -19,12 +19,14 @@
 (defn patient-page [request]
   {:status 200
    :headers {"Content-type" "text/html"}
-   :body (psv/layout (meta (psv/profile-page patient-profile)) (psv/profile-page patient-profile))})
+   :body  (let [pt-page (psv/profile-page patient-profile)]
+            (psv/layout (meta pt-page) pt-page))})
 
 (defn home-page [request]
   {:status 200
    :headers {"Content-type" "text/html"}
-   :body (psv/layout (meta (psv/home-page)) (psv/home-page))})
+   :body (let [hm-page (psv/home-page)]
+           (psv/layout (meta hm-page) hm-page))})
 
 (defroutes app
   (GET "/" [] #'home-page)

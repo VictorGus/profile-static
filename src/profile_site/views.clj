@@ -129,7 +129,7 @@
                                                                                                                                     "background-image: url(/assets/tbl_bck11.png)"))
                                                                                            [:img {:src "/assets/tbl_spacer.png"
                                                                                                   :style "vertical-align: top;
-                                                                                      background-color: white;"}]
+                                                                                                          background-color: white;"}]
                                                                                            [:img {:src "/assets/tbl_vjoin.png"
                                                                                                   :style "vertical-align: top"}]
                                                                                            [:img {:src (get-icon [:attrs item] resource)
