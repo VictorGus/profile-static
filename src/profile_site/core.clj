@@ -20,9 +20,15 @@
   {:status 200
    :headers {"Content-type" "text/html"}
    :body (psv/profile-page patient-profile)})
+   
+(defn home-page [request]
+  {:status 200
+   :headers {"Content-type" "text/html"}
+   :body (psv/home-page)})
 
 (defroutes app
-  (GET "/" [] #'patient-page)
+  (GET "/" [] #'home-page)
+  (GET "/pat" [] #'patient-page)
   (route/resources "/assets/")
   (route/not-found "This page doesn't exist"))
 

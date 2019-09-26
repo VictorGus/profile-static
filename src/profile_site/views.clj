@@ -64,6 +64,53 @@
   (when (> (count items) 0)
     (assoc-in items [(.indexOf items (last items)) 1 4 1 :src] "/assets/tbl_vjoin_end.png")))
 
+(defn home-page []
+  (layout "Title" [:style (pss/style pss/profile-style)]
+          [:div {:id "menu"}
+           [:div {:id "logo"}
+            [:img {:src "http://www.hl7.org/fhir/us/core/assets/images/fhir-logo-www.png"}]
+            ]
+           ]
+          [:div {:id "wrap"}
+           [:div {:id "nav"}
+            [:ul
+             [:li
+              [:a {:href "/index.html"} "Главная"[:ul]]
+              ]
+             [:li
+              [:a {:href "/profiles/index.html"} "Профили Ресурсов"
+               [:ul
+                [:li
+                 [:a {:href "/profiles/Patient/index.html"} "Пациент (Patient)" [:ul]]
+                 ]
+                [:li
+                 [:a {:href "/profiles/Organization/index.html"} "Organization" [:ul]]
+                 ]
+                [:li
+                 [:a {:href "/profiles/Practitioner/index.html"} "Practitioner" [:ul]]
+                 ]
+
+                ]
+              ]
+              ]
+             [:li
+             [:a {:href "/valuesets/index.html"} "Терминологии"
+              [:ul
+               [:li
+                [:a {:href "/valuesets/Patient-identifiers/index.html"} "Идентификаторы Пациента" [:ul]]
+                ]
+               ]
+              ]
+              ]
+            ]
+            ]
+           [:div {:id "body"}
+            [:h1 "undefined"]
+            ]
+           ]
+          )
+  )
+
 (defn profile-page [{resourceType :resourceType :as resource}]
   (layout resourceType [:style (pss/style pss/profile-style)]
               (-> [:table
