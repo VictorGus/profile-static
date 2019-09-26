@@ -52,47 +52,46 @@
                     [:.table-icon
                      {:vertical-align "top"
                       :margin "0px 2px 0px 0px"
-                      :background-color "white"}]]
-                      
-              ;;Menu styles
-              
-    				[:body
+                      :background-color "white"}]
+
+                    [:body
                      {:display "flex"
                       :flex-direction "column"
                       :font-family "'Roboto', sans-serif"
                       :margin "0"
                       :color "#212529"
-                      :font-size "1rem"
-                      :font-weight "400"
                       :line-height "1.5"
-                      :text-align "left"
-                      :background-color "#fff"
-                      }]
+                      :text-align "left"}]
 
-                    [:div#menu :div#logo :img
+                    [:.logo :.img-logo
                      {:height "30px"}]
 
-                    [:div#menu
-                     {:padding "10px 40px"}]
+                    [:.resource-list
+                     {:padding-left "10px"
+                      :margin-left "0px"}]
 
-                    [:div#body
+                    [:.terminology-list
+                     {:padding-left "10px"
+                      :margin-left "0px"}]
+
+                    [:.menu
+                     {:padding "10px 40px"
+                      :list-style-position "inside"}]
+
+                    [:.profile
                      {:margin "30px 88px"}]
 
-                    [:div#wrap
+                    [:.wrap
                      {:flex-direction "row"
                       :display "flex"
                       :box-sizing "border-box"}]
 
-                    [:div#nav
+                    [:.nav
                      {:margin "1px"
                       :padding "20px 30px"
                       :display "flex"
                       :min-width "298px"
-                      :background "#F5F7F9"
+                      :background "#f1f1f1"
                       :padding-left "12";;"calc((100% - 1448px) / 2)"
                       :width "calc((100% - 1448px) / 2 + 298px)"
-                      :border-right "1px solid #e6ecf1"}]
-                    ]                  
-                      
-                      
-    )
+                      :border-right "1px solid #e6ecf1"}]])
