@@ -72,11 +72,16 @@
                                   font-size: 11px;
                                   font-family: verdana;
                                   vertical-align: top;"}
-                     [:th "Имя"]
-                     [:th "Флаги"]
-                     [:th "Кард."]
-                     [:th "Тип"]
-                     [:th "Описание и ограничения"]]
+                     [:th
+                      [:a "Имя"]]
+                     [:th
+                      [:a "Флаги"]]
+                     [:th
+                      [:a "Кард."]]
+                     [:th
+                      [:a "Тип"]]
+                     [:th
+                      [:a "Описание и ограничения"]]]
                     [:tr
                      [:td {:class "line-item-resource-type"}
                       [:img {:src "/assets/icon_element.gif"

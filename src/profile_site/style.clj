@@ -27,10 +27,8 @@
                       :border-spacing "0px"
                       :border-collapse "collapse"}]
 
-                    [:tr>td
-                     {:border "0px"
-                      :vertical-align "top"
-                      :padding-bottom "10px"}]
+                    [:a
+                     {:text-decoration "none"}]
 
                     [:td
                      {:line-height "1em"}]
