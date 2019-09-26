@@ -6,6 +6,7 @@
 (defn layout [title & content]
   (hc/html [:html
             [:head
+             [:style (pss/style pss/profile-style)]
              [:meta {:charset "utf-8"}]
              [:title title]]
             [:body content]]))
@@ -64,6 +65,33 @@
   (when (> (count items) 0)
     (assoc-in items [(.indexOf items (last items)) 1 4 1 :src] "/assets/tbl_vjoin_end.png")))
 
+(def menu
+  [:div
+   [:div {:class "menu"}
+    [:div {:class "logo"}
+     [:img {:class "img-logo"
+            :src "http://www.hl7.org/fhir/us/core/assets/images/fhir-logo-www.png"}]]]
+   [:div {:class "wrap"}
+    [:div {:class "nav"}
+     [:ul
+      [:li
+       [:a {:href "/index.html"} "Главная"[:ul]]]
+      [:li
+       [:a {:href "/profiles/index.html"} "Профили Ресурсов"
+        [:ul {:class "resource-list"}
+         [:li
+          [:a {:href "/profiles/Patient/index.html"} "Пациент (Patient)" [:ul]]]
+         [:li
+          [:a {:href "/profiles/Organization/index.html"} "Organization" [:ul]]]
+         [:li
+          [:a {:href "/profiles/Practitioner/index.html"} "Practitioner" [:ul]]]]]]
+      [:li
+       [:a {:href "/valuesets/index.html"} "Терминологии"
+        [:ul {:class "terminology-list"}
+         [:li
+          [:a {:href "/valuesets/Patient-identifiers/index.html"} "Идентификаторы Пациента" [:ul]]]]]]]]
+    [:div {:class "profile"}]]])
+
 (defn home-page []
   (let [home ^:title (lazy-seq [[:style (pss/style pss/profile-style)]
                                 [:div {:class "menu"}
@@ -95,98 +123,107 @@
     (with-meta home {:title "Home"})
     home))
 
-(defn profile-page [{resourceType :resourceType :as resource}]
-  (let [profile ^:title (lazy-seq[[:style (pss/style pss/profile-style)]
-                                  (-> [:table
-                                       [:tbody
-                                        [:tr {:style "border: 1px #F0F0F0 solid;
+(defn profile [{resourceType :resourceType :as resource}]
+  (let [prl ^:title (-> [:table
+                         [:tbody
+                          [:tr {:style "border: 1px #F0F0F0 solid;
                                   font-size: 11px;
                                   font-family: verdana;
                                   vertical-align: top;"}
-                                         [:th
-                                          [:a "Имя"]]
-                                         [:th
-                                          [:a "Флаги"]]
-                                         [:th
-                                          [:a "Кард."]]
-                                         [:th
-                                          [:a "Тип"]]
-                                         [:th
-                                          [:a "Описание и ограничения"]]]
-                                        [:tr
-                                         [:td {:class "line-item-resource-type"}
-                                          [:img {:src "/assets/icon_element.gif"
-                                                 :style "vertical-align: top"}]
-                                          (get resource :resourceType)]
-                                         [:td {:class "line-item"} ""]
-                                         [:td {:class "line-item"
-                                               :style "opacity: 0.4"} "0..*"]]]]
-                                      (concat (set-last-item-img (vec (for [item (vec (keys (:attrs resource)))]
-                                                                        (vec (-> [:tbody [:tr
-                                                                                          [:td (assoc {:class "line-item"} :style (when (->> item
-                                                                                                                                             (get (:attrs resource))
-                                                                                                                                             (:attrs))
-                                                                                                                                    "background-image: url(/assets/tbl_bck11.png)"))
-                                                                                           [:img {:src "/assets/tbl_spacer.png"
-                                                                                                  :style "vertical-align: top;
+                           [:th
+                            [:a "Имя"]]
+                           [:th
+                            [:a "Флаги"]]
+                           [:th
+                            [:a "Кард."]]
+                           [:th
+                            [:a "Тип"]]
+                           [:th
+                            [:a "Описание и ограничения"]]]
+                          [:tr
+                           [:td {:class "line-item-resource-type"}
+                            [:img {:src "/assets/icon_element.gif"
+                                   :style "vertical-align: top"}]
+                            (get resource :resourceType)]
+                           [:td {:class "line-item"} ""]
+                           [:td {:class "line-item"
+                                 :style "opacity: 0.4"} "0..*"]]]]
+
+                        (concat (set-last-item-img (vec (for [item (vec (keys (:attrs resource)))]
+                                                          (vec (-> [:tbody [:tr
+                                                                            [:td (assoc {:class "line-item"} :style (when (->> item
+                                                                                                                               (get (:attrs resource))
+                                                                                                                               (:attrs))
+                                                                                                                      "background-image: url(/assets/tbl_bck11.png)"))
+                                                                             [:img {:src "/assets/tbl_spacer.png"
+                                                                                    :style "vertical-align: top;
                                                                                                           background-color: white;"}]
-                                                                                           [:img {:src "/assets/tbl_vjoin.png"
-                                                                                                  :style "vertical-align: top"}]
-                                                                                           [:img {:src (get-icon [:attrs item] resource)
-                                                                                                  :class "table-icon"}]
-                                                                                           [:a item]]
-                                                                                          [:td {:class "line-item"}
-                                                                                           [:span {:class "flag-item"}
-                                                                                            "S"]]
-                                                                                          (let [card (get-cardinality [item] resource)]
-                                                                                            (if (or (= card "1..1") (= card "1..*"))
-                                                                                              [:td {:class "line-item"}
-                                                                                               card]
-                                                                                              [:td {:class "line-item"
-                                                                                                    :style "opacity: 0.4"}
-                                                                                               card]))
-                                                                                          [:td {:class "line-item"
-                                                                                                :style "opacity: 0.4"}
-                                                                                           (get-type [item] resource)]
-                                                                                          [:td {:class "line-item"} [:a (-> resource
-                                                                                                                            (:attrs)
-                                                                                                                            (get item)
-                                                                                                                            (get :desc))]]]]
-                                                                                 (concat (set-last-inner-item-img (vec (for [inner (->> item
-                                                                                                                                        (get (:attrs resource))
-                                                                                                                                        (:attrs)
-                                                                                                                                        (keys)
-                                                                                                                                        (vec))]
-                                                                                                                         [:tr
-                                                                                                                          [:td {:class "line-inner-item"}
-                                                                                                                           [:img {:src "/assets/tbl_spacer.png"
-                                                                                                                                  :style "vertical-align: top"}]
-                                                                                                                           [:img {:src "/assets/tbl_vline.png"
-                                                                                                                                  :style "vertical-align: top"}]
-                                                                                                                           [:img {:src "/assets/tbl_vjoin.png"
-                                                                                                                                  :style "vertical-align: top"}]
-                                                                                                                           [:img {:src (get-icon [:attrs item inner] resource)
-                                                                                                                                  :class "table-icon"}]
-                                                                                                                           inner]
-                                                                                                                          [:td {:class "line-item"}
-                                                                                                                           [:span {:class "flag-item"}
-                                                                                                                            "S"]]
-                                                                                                                          (let [card (get-cardinality [item :attrs inner] resource)]
-                                                                                                                            (if (or (= card "1..1") (= card "1..*"))
-                                                                                                                              [:td {:class "line-item"}
-                                                                                                                               card]
-                                                                                                                              [:td {:class "line-item"
-                                                                                                                                    :style "opacity: 0.4"}
-                                                                                                                               card]))
-                                                                                                                          [:td {:class "line-item"
-                                                                                                                                :style "opacity: 0.4"}
-                                                                                                                           (get-type [item :attrs inner] resource)]
-                                                                                                                          [:td {:class "line-item"} [:a (-> resource
-                                                                                                                                                            (:attrs)
-                                                                                                                                                            (get item)
-                                                                                                                                                            (:attrs)
-                                                                                                                                                            (get inner)
-                                                                                                                                                            (get :desc))]]]))))))))))
-                                      (vec))])]
-    (with-meta profile {:title resourceType})
-    profile))
+                                                                             [:img {:src "/assets/tbl_vjoin.png"
+                                                                                    :style "vertical-align: top"}]
+                                                                             [:img {:src (get-icon [:attrs item] resource)
+                                                                                    :class "table-icon"}]
+                                                                             [:a item]]
+                                                                            [:td {:class "line-item"}
+                                                                             [:span {:class "flag-item"}
+                                                                              "S"]]
+                                                                            (let [card (get-cardinality [item] resource)]
+                                                                              (if (or (= card "1..1") (= card "1..*"))
+                                                                                [:td {:class "line-item"}
+                                                                                 card]
+                                                                                [:td {:class "line-item"
+                                                                                      :style "opacity: 0.4"}
+                                                                                 card]))
+                                                                            [:td {:class "line-item"
+                                                                                  :style "opacity: 0.4"}
+                                                                             (get-type [item] resource)]
+                                                                            [:td {:class "line-item"} [:a (-> resource
+                                                                                                              (:attrs)
+                                                                                                              (get item)
+                                                                                                              (get :desc))]]]]
+
+                                                                   (concat (set-last-inner-item-img (vec (for [inner (->> item
+                                                                                                                          (get (:attrs resource))
+                                                                                                                          (:attrs)
+                                                                                                                          (keys)
+                                                                                                                          (vec))]
+                                                                                                           [:tr
+                                                                                                            [:td {:class "line-inner-item"}
+                                                                                                             [:img {:src "/assets/tbl_spacer.png"
+                                                                                                                    :style "vertical-align: top"}]
+                                                                                                             [:img {:src "/assets/tbl_vline.png"
+                                                                                                                    :style "vertical-align: top"}]
+                                                                                                             [:img {:src "/assets/tbl_vjoin.png"
+                                                                                                                    :style "vertical-align: top"}]
+                                                                                                             [:img {:src (get-icon [:attrs item inner] resource)
+                                                                                                                    :class "table-icon"}]
+                                                                                                             inner]
+                                                                                                            [:td {:class "line-item"}
+                                                                                                             [:span {:class "flag-item"}
+                                                                                                              "S"]]
+                                                                                                            (let [card (get-cardinality [item :attrs inner] resource)]
+                                                                                                              (if (or (= card "1..1") (= card "1..*"))
+                                                                                                                [:td {:class "line-item"}
+                                                                                                                 card]
+                                                                                                                [:td {:class "line-item"
+                                                                                                                      :style "opacity: 0.4"}
+                                                                                                                 card]))
+                                                                                                            [:td {:class "line-item"
+                                                                                                                  :style "opacity: 0.4"}
+                                                                                                             (get-type [item :attrs inner] resource)]
+                                                                                                            [:td {:class "line-item"} [:a (-> resource
+                                                                                                                                              (:attrs)
+                                                                                                                                              (get item)
+                                                                                                                                              (:attrs)
+                                                                                                                                              (get inner)
+                                                                                                                                              (get :desc))]]]))))))))))
+                        (vec))]
+    (with-meta prl {:title resourceType})
+    prl))
+
+(defn profile-page [resource menu]
+  (let [prl (profile resource)]
+    (with-meta (assoc-in menu [(.indexOf menu (last menu)) (.indexOf (last menu) [:div {:class "profile"}]) 2] prl) (meta prl))))
+
+(defn profile-page->html [resource]
+  (let [pt-page (profile-page resource menu)]
+    (layout (meta pt-page) pt-page)))

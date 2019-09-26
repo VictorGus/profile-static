@@ -19,8 +19,7 @@
 (defn patient-page [request]
   {:status 200
    :headers {"Content-type" "text/html"}
-   :body  (let [pt-page (psv/profile-page patient-profile)]
-            (psv/layout (meta pt-page) pt-page))})
+   :body (psv/profile-page->html patient-profile)})
 
 (defn home-page [request]
   {:status 200
