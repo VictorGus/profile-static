@@ -27,6 +27,12 @@
                       :border-spacing "0px"
                       :border-collapse "collapse"}]
 
+                    [:a#list-item
+                     {:color "#666"}]
+
+                    [:a#list-item:hover
+                     {:text-decoration "underline"}]
+
                     [:a
                      {:text-decoration "none"}]
 

@@ -16,10 +16,17 @@
 
 (def patient-profile (yaml/parse-string (get-data "Patient.yaml")))
 
+(def organization-profile (yaml/parse-string (get-data "Organization.yaml")))
+
 (defn patient-page [request]
   {:status 200
    :headers {"Content-type" "text/html"}
    :body (psv/profile-page->html patient-profile)})
+
+(defn organization-page [request]
+  {:status 200
+   :headers {"Content-type" "text/html"}
+   :body (psv/profile-page->html organization-profile)})
 
 (defn home-page [request]
   {:status 200
@@ -29,7 +36,8 @@
 
 (defroutes app
   (GET "/" [] #'home-page)
-  (GET "/pat" [] #'patient-page)
+  (GET "/profiles/Patient" [] #'patient-page)
+  (GET "/profiles/Organization" [] #'organization-page)
   (route/resources "/assets/")
   (route/not-found "This page doesn't exist"))
 

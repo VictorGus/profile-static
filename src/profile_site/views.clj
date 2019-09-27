@@ -65,7 +65,7 @@
   (when (> (count items) 0)
     (assoc-in items [(.indexOf items (last items)) 1 4 1 :src] "/assets/tbl_vjoin_end.png")))
 
-(def menu
+(def menu 
   [:div
    [:div {:class "menu"}
     [:div {:class "logo"}
@@ -75,21 +75,28 @@
     [:div {:class "nav"}
      [:ul
       [:li
-       [:a {:href "/index.html"} "Главная"[:ul]]]
+       [:a {:id "list-item"
+            :href "/index.html"} "Главная"]]
       [:li
-       [:a {:href "/profiles/index.html"} "Профили Ресурсов"
+       [:a {:id "list-item"
+            :href "/profiles/index.html"} "Профили Ресурсов"
         [:ul {:class "resource-list"}
          [:li
-          [:a {:href "/profiles/Patient/index.html"} "Пациент (Patient)" [:ul]]]
+          [:a {:id "list-item"
+               :href "/profiles/Patient"} "Пациент (Patient)"]]
          [:li
-          [:a {:href "/profiles/Organization/index.html"} "Organization" [:ul]]]
+          [:a {:id "list-item"
+               :href "/profiles/Organization"} "Organization"]]
          [:li
-          [:a {:href "/profiles/Practitioner/index.html"} "Practitioner" [:ul]]]]]]
+          [:a {:id "list-item"
+               :href "/profiles/Practitioner"} "Practitioner"]]]]]
       [:li
-       [:a {:href "/valuesets/index.html"} "Терминологии"
+       [:a {:id "list-item"
+            :href "/valuesets"} "Терминологии"
         [:ul {:class "terminology-list"}
          [:li
-          [:a {:href "/valuesets/Patient-identifiers/index.html"} "Идентификаторы Пациента" [:ul]]]]]]]]
+          [:a {:id "list-item"
+               :href "/valuesets/Patient-identifiers"} "Идентификаторы Пациента"]]]]]]]
     [:div {:class "profile"}]]])
 
 (defn home-page []
@@ -222,8 +229,9 @@
 
 (defn profile-page [resource menu]
   (let [prl (profile resource)]
-    (with-meta (assoc-in menu [(.indexOf menu (last menu)) (.indexOf (last menu) [:div {:class "profile"}]) 2] prl) (meta prl))))
+    (with-meta (assoc-in menu [(.indexOf menu (last menu)) (.indexOf (last menu) [:div {:class "profile"}]) 2] prl) {:title (get resource :resourceType)})))
 
 (defn profile-page->html [resource]
-  (let [pt-page (profile-page resource menu)]
-    (layout (meta pt-page) pt-page)))
+  (let [page-title (meta (profile-page resource menu))
+        pt-page (profile-page resource menu)]
+    (layout (:title page-title) pt-page)))
