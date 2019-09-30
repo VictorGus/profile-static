@@ -63,9 +63,10 @@
 
 (defn set-last-inner-item-img [items]
   (when (> (count items) 0)
-    (assoc-in items [(.indexOf items (last items)) 1 4 1 :src] "/assets/tbl_vjoin_end.png")))
+    (assoc-in items [(.indexOf items (last items)) 1 4 1 :src] "/assets/tbl_vjoin_end.png")
+    (assoc-in items [(.indexOf items (last items)) 1 1 1 :style] "background-color: white")))
 
-(def menu 
+(def menu
   [:div
    [:div {:class "menu"}
     [:div {:class "logo"}
@@ -79,56 +80,34 @@
             :href "/index.html"} "Главная"]]
       [:li
        [:a {:id "list-item"
-            :href "/profiles/index.html"} "Профили Ресурсов"
-        [:ul {:class "resource-list"}
-         [:li
-          [:a {:id "list-item"
-               :href "/profiles/Patient"} "Пациент (Patient)"]]
-         [:li
-          [:a {:id "list-item"
-               :href "/profiles/Organization"} "Organization"]]
-         [:li
-          [:a {:id "list-item"
-               :href "/profiles/Practitioner"} "Practitioner"]]]]]
+            :href "/profiles/index.html"} "Профили Ресурсов"]
+       [:ul {:class "resource-list"}
+        [:li
+         [:a {:id "list-item"
+              :href "/profiles/Patient"} "Пациент (Patient)"]]
+        [:li
+         [:a {:id "list-item"
+              :href "/profiles/Organization"} "Organization"]]
+        [:li
+         [:a {:id "list-item"
+              :href "/profiles/Practitioner"} "Practitioner"]]]]
       [:li
        [:a {:id "list-item"
-            :href "/valuesets"} "Терминологии"
-        [:ul {:class "terminology-list"}
-         [:li
-          [:a {:id "list-item"
-               :href "/valuesets/Patient-identifiers"} "Идентификаторы Пациента"]]]]]]]
+            :href "/valuesets"} "Терминологии"]
+       [:ul {:class "terminology-list"}
+        [:li
+         [:a {:id "list-item"
+              :href "/valuesets/Patient-identifiers"} "Идентификаторы Пациента"]]]]]]
     [:div {:class "profile"}]]])
 
 (defn home-page []
-  (let [home ^:title (lazy-seq [[:style (pss/style pss/profile-style)]
-                                [:div {:class "menu"}
-                                 [:div {:class "logo"}
-                                  [:img {:class "img-logo"
-                                         :src "http://www.hl7.org/fhir/us/core/assets/images/fhir-logo-www.png"}]]]
+  (let [hm [:h1 "Home page"]]
+    (with-meta (assoc-in menu [(.indexOf menu (last menu)) (.indexOf (last menu) [:div {:class "profile"}]) 2] hm) {:title "Home"})))
 
-                                [:div {:class "wrap"}
-                                 [:div {:class "nav"}
-                                  [:ul
-                                   [:li
-                                    [:a {:href "/index.html"} "Главная"[:ul]]]
-                                   [:li
-                                    [:a {:href "/profiles/index.html"} "Профили Ресурсов"
-                                     [:ul {:class "resource-list"}
-                                      [:li
-                                       [:a {:href "/profiles/Patient/index.html"} "Пациент (Patient)" [:ul]]]
-                                      [:li
-                                       [:a {:href "/profiles/Organization/index.html"} "Organization" [:ul]]]
-                                      [:li
-                                       [:a {:href "/profiles/Practitioner/index.html"} "Practitioner" [:ul]]]]]]
-                                   [:li
-                                    [:a {:href "/valuesets/index.html"} "Терминологии"
-                                     [:ul {:class "terminology-list"}
-                                      [:li
-                                       [:a {:href "/valuesets/Patient-identifiers/index.html"} "Идентификаторы Пациента" [:ul]]]]]]]]
-                                 [:div {:class "profile"}
-                                  [:h1 "undefined"]]]])]
-    (with-meta home {:title "Home"})
-    home))
+(defn home-page->html []
+  (let [page-title (meta (home-page))
+        hm-page (home-page)]
+    (layout (:title page-title) hm-page)))
 
 (defn profile [{resourceType :resourceType :as resource}]
   (let [prl ^:title (-> [:table
@@ -163,10 +142,9 @@
                                                                                                                                (:attrs))
                                                                                                                       "background-image: url(/assets/tbl_bck11.png)"))
                                                                              [:img {:src "/assets/tbl_spacer.png"
-                                                                                    :style "vertical-align: top;
-                                                                                                          background-color: white;"}]
+                                                                                    :style "vertical-align: top; background-color: white;"}]
                                                                              [:img {:src "/assets/tbl_vjoin.png"
-                                                                                    :style "vertical-align: top"}]
+                                                                                    :style "vertical-align: top; background-color: white;"}]
                                                                              [:img {:src (get-icon [:attrs item] resource)
                                                                                     :class "table-icon"}]
                                                                              [:a item]]
@@ -198,9 +176,9 @@
                                                                                                              [:img {:src "/assets/tbl_spacer.png"
                                                                                                                     :style "vertical-align: top"}]
                                                                                                              [:img {:src "/assets/tbl_vline.png"
-                                                                                                                    :style "vertical-align: top"}]
+                                                                                                                    :style "vertical-align: top; background-color: white"}]
                                                                                                              [:img {:src "/assets/tbl_vjoin.png"
-                                                                                                                    :style "vertical-align: top"}]
+                                                                                                                    :style "vertical-align: top; background-color: white"}]
                                                                                                              [:img {:src (get-icon [:attrs item inner] resource)
                                                                                                                     :class "table-icon"}]
                                                                                                              inner]

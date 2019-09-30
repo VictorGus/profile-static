@@ -15,10 +15,19 @@
                       :text-align "left"
                       :padding "0px 4px 0px 4px"}]
 
+                    [:ul
+                     {:padding-left "20px"
+                      :margin "0px"
+                      :width "70%"}]
+
+                    [:li
+                     {:margin-bottom "10px"}]
+
                     [:.line-inner-item
                      {:vertical-align "top"
                       :text-align "left"
-                      :padding "0px 4px 0px 4px"}]
+                      :padding "0px 4px 0px 4px"
+                      :background-image "url(/assets/tbl_bck110.png)"}]
 
                     [:table
                      {:font-size "11px"
@@ -73,19 +82,24 @@
                      {:height "30px"}]
 
                     [:.resource-list
-                     {:padding-left "10px"
+                     {:padding-left "15px"
+                      :padding-top "7px"
                       :margin-left "0px"}]
 
                     [:.terminology-list
-                     {:padding-left "10px"
+                     {:padding-left "15px"
+                      :padding-top "7px"
                       :margin-left "0px"}]
 
                     [:.menu
                      {:padding "10px 40px"
-                      :list-style-position "inside"}]
+                      :list-style-position "inside"
+                      :box-shadow "0 3px 8px 0 rgba(116, 129, 141, 0.1)"
+                      :border-bottom "1px solid #d4dadf"
+                      :height "58px"}]
 
                     [:.profile
-                     {:margin "30px 88px"}]
+                     {:margin "20px 88px"}]
 
                     [:.wrap
                      {:flex-direction "row"
@@ -97,7 +111,8 @@
                       :padding "20px 30px"
                       :display "flex"
                       :min-width "298px"
+                      :max-height "50%"
                       :background "#f1f1f1"
-                      :padding-left "12";;"calc((100% - 1448px) / 2)"
+                      :padding-left "1.5px";;"calc((100% - 1448px) / 2)"
                       :width "calc((100% - 1448px) / 2 + 298px)"
                       :border-right "1px solid #e6ecf1"}]])

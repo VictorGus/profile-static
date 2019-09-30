@@ -31,8 +31,7 @@
 (defn home-page [request]
   {:status 200
    :headers {"Content-type" "text/html"}
-   :body (let [hm-page (psv/home-page)]
-           (psv/layout (meta hm-page) hm-page))})
+   :body (psv/home-page->html)})
 
 (defroutes app
   (GET "/" [] #'home-page)
