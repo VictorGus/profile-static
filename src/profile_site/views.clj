@@ -73,7 +73,7 @@
             :src "http://www.hl7.org/fhir/us/core/assets/images/fhir-logo-www.png"}]]]
    [:div {:class "wrap"}
     [:div {:class "nav"}
-     [:ul
+     [:ul {:class "ulmenu"}
       [:li
        [:a {:id "list-item"
             :href "/index.html"} "Главная"]]

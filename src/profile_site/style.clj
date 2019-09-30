@@ -80,9 +80,16 @@
                      {:padding-left "10px"
                       :margin-left "0px"}]
 
+                    [:.menu :.logo
+                     {:padding "10px 50px"}]
+
                     [:.menu
-                     {:padding "10px 40px"
-                      :list-style-position "inside"}]
+                     {:margin "0px"
+                      :padding "10px 40px"
+                      :box-shadow "0 3px 8px 0 rgba(116, 129, 141, 0.1)"
+                      :border-bottom "1px solid #d4dadf"
+                      :list-style-position "inside"
+                      :height "59px"}]
 
                     [:.profile
                      {:margin "30px 88px"}]
@@ -93,11 +100,16 @@
                       :box-sizing "border-box"}]
 
                     [:.nav
-                     {:margin "1px"
-                      :padding "20px 30px"
-                      :display "flex"
+                     {:padding "20px 30px"
                       :min-width "298px"
-                      :background "#f1f1f1"
-                      :padding-left "12";;"calc((100% - 1448px) / 2)"
-                      :width "calc((100% - 1448px) / 2 + 298px)"
-                      :border-right "1px solid #e6ecf1"}]])
+                      :background "#f5f7f9"
+                      :padding-left "0"
+                      :padding-top "1px"
+                      :width "20px"
+                      :height "min-content"
+                      :border-right "1px solid #e6ecf1"}]
+
+                    [:.ulmenu
+                     {:padding-inline-start "0px"
+                      :padding "7px 24px 5px 16px"
+                      :line-height "35px"}]])
