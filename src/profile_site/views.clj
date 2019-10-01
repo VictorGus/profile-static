@@ -6,7 +6,7 @@
 (defn layout [title & content]
   (hc/html [:html
             [:head
-             [:style (pss/style pss/profile-style)]
+             [:style (pss/style (pss/set-page-style pss/profile-style pss/navigation-menu-style))]
              [:meta {:charset "utf-8"}]
              [:title title]]
             [:body content]]))

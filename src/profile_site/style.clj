@@ -4,123 +4,127 @@
 (defn style [data]
   (gc/css data))
 
-(def profile-style [[:.line-item
-                     {:vertical-align "top"
-                      :text-align "left"
-                      :padding "0px 4px 0px 4px"
-                      :background-color "white"}]
+(defn set-page-style [style & styles]
+  (conj styles style))
 
-                    [:.line-item-resource-type
-                     {:vertical-align "top"
-                      :text-align "left"
-                      :padding "0px 4px 0px 4px"}]
+(def profile-style
+  [[:.line-item
+    {:vertical-align "top"
+     :text-align "left"
+     :padding "0px 4px 0px 4px"
+     :background-color "white"}]
 
-                    [:ul
-                     {:padding-left "20px"
-                      :margin "0px"
-                      :width "70%"}]
+   [:.line-item-resource-type
+    {:vertical-align "top"
+     :text-align "left"
+     :padding "0px 4px 0px 4px"}]
 
-                    [:li
-                     {:margin-bottom "10px"}]
+   [:.line-inner-item
+    {:vertical-align "top"
+     :text-align "left"
+     :padding "0px 4px 0px 4px"
+     :background-image "url(/assets/tbl_bck110.png)"}]
 
-                    [:.line-inner-item
-                     {:vertical-align "top"
-                      :text-align "left"
-                      :padding "0px 4px 0px 4px"
-                      :background-image "url(/assets/tbl_bck110.png)"}]
+   [:table
+    {:font-size "11px"
+     :font-family "verdana"
+     :max-width "100%"
+     :border-spacing "0px"
+     :border-collapse "collapse"}]
 
-                    [:table
-                     {:font-size "11px"
-                      :font-family "verdana"
-                      :max-width "100%"
-                      :border-spacing "0px"
-                      :border-collapse "collapse"}]
+   [:a#list-item
+    {:color "#666"}]
 
-                    [:a#list-item
-                     {:color "#666"}]
+   [:a#list-item:hover
+    {:text-decoration "underline"}]
 
-                    [:a#list-item:hover
-                     {:text-decoration "underline"}]
+   [:a
+    {:text-decoration "none"}]
 
-                    [:a
-                     {:text-decoration "none"}]
+   [:td
+    {:line-height "1em"}]
 
-                    [:td
-                     {:line-height "1em"}]
+   [:tbody
+    {:display "table-row-group"}]
 
-                    [:tbody
-                     {:display "table-row-group"}]
+   [:.flag-item
+    {:padding-left "3px"
+     :padding-right "3px"
+     :color "white"
+     :background-color "red"}]
 
-                    [:.flag-item
-                     {:padding-left "3px"
-                      :padding-right "3px"
-                      :color "white"
-                      :background-color "red"}]
+   [:th
+    {:vertical-align "top"
+     :text-align "left"
+     :background-color "white"
+     :border "0px #F0F0F0 solid"
+     :padding "0px 4px 0px 4px"}]
 
-                    [:th
-                     {:vertical-align "top"
-                      :text-align "left"
-                      :background-color "white"
-                      :border "0px #F0F0F0 solid"
-                      :padding "0px 4px 0px 4px"}]
+   [:.table-icon
+    {:vertical-align "top"
+     :margin "0px 2px 0px 0px"
+     :background-color "white"}]
 
-                    [:.table-icon
-                     {:vertical-align "top"
-                      :margin "0px 2px 0px 0px"
-                      :background-color "white"}]
+   [:body
+    {:display "flex"
+     :flex-direction "column"
+     :font-family "'Roboto', sans-serif"
+     :margin "0"
+     :color "#212529"
+     :line-height "1.5"
+     :text-align "left"}]
 
-                    [:body
-                     {:display "flex"
-                      :flex-direction "column"
-                      :font-family "'Roboto', sans-serif"
-                      :margin "0"
-                      :color "#212529"
-                      :line-height "1.5"
-                      :text-align "left"}]
+   [:.logo :.img-logo
+    {:height "30px"}]
 
-                    [:.logo :.img-logo
-                     {:height "30px"}]
+   [:.menu :.logo
+    {:padding "10px 50px"}]
 
-                    [:.resource-list
-                     {:padding-left "15px"
-                      :padding-top "7px"
-                      :margin-left "0px"}]
+   [:.profile
+    {:margin "20px 88px"}]
 
-                    [:.terminology-list
-                     {:padding-left "15px"
-                      :padding-top "7px"
-                      :margin-left "0px"}]
+   [:.wrap
+    {:flex-direction "row"
+     :display "flex"
+     :box-sizing "border-box"}]])
 
-                    [:.menu :.logo
-                     {:padding "10px 50px"}]
+(def navigation-menu-style
+  [[:.menu
+    {:margin "0px"
+     :padding "10px 40px"
+     :box-shadow "0 3px 8px 0 rgba(116, 129, 141, 0.1)"
+     :border-bottom "1px solid #d4dadf"
+     :list-style-position "inside"
+     :height "59px"}]
+   [:.nav
+    {:padding "20px 30px"
+     :min-width "298px"
+     :background "#f5f7f9"
+     :padding-left "0"
+     :padding-top "1px"
+     :width "20px"
+     :height "min-content"
+     :border-right "1px solid #e6ecf1"}]
 
-                    [:.menu
-                     {:margin "0px"
-                      :padding "10px 40px"
-                      :box-shadow "0 3px 8px 0 rgba(116, 129, 141, 0.1)"
-                      :border-bottom "1px solid #d4dadf"
-                      :list-style-position "inside"
-                      :height "59px"}]
+   [:.resource-list
+    {:padding-left "15px"
+     :padding-top "7px"
+     :margin-left "0px"}]
 
-                    [:.profile
-                     {:margin "20px 88px"}]
+   [:.terminology-list
+    {:padding-left "15px"
+     :padding-top "7px"
+     :margin-left "0px"}]
 
-                    [:.wrap
-                     {:flex-direction "row"
-                      :display "flex"
-                      :box-sizing "border-box"}]
+   [:ul
+    {:padding-left "20px"
+     :margin "0px"
+     :width "70%"}]
 
-                    [:.nav
-                    {:padding "20px 30px"
-                     :min-width "298px"
-                     :background "#f5f7f9"
-                     :padding-left "0"
-                     :padding-top "1px"
-                     :width "20px"
-                     :height "min-content"
-                     :border-right "1px solid #e6ecf1"}]
+   [:li
+    {:margin-bottom "10px"}]
 
-                    [:.ulmenu
-                     {:padding-inline-start "0px"
-                      :padding "7px 24px 5px 16px"
-                      :line-height "35px"}]])
+   [:.ulmenu
+    {:padding-inline-start "0px"
+     :padding "7px 24px 5px 16px"
+     :line-height "35px"}]])
