@@ -1,7 +1,8 @@
 (ns profile-site.views
   (:require [garden.core :as gc]
             [hiccup.core :as hc]
-            [profile-site.style :as pss]))
+            [profile-site.style :as pss]
+            [profile-site.utils :as psu]))
 
 (defn layout [title & content]
   (hc/html [:html
@@ -103,7 +104,7 @@
 
 (defn home-page []
   (let [hm [:h1 "Home page"]]
-    (with-meta (assoc-in menu [(.indexOf menu (last menu)) (.indexOf (last menu) [:div {:class "profile"}]) 2] hm) {:title "Home"})))
+    (with-meta (assoc-in menu psu/vector-first-path #(= % {:class "profile"}) hm) {:title "Home"})))
 
 (defn home-page->html []
   (let [page-title (meta (home-page))
