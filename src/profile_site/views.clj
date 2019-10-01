@@ -63,8 +63,9 @@
 
 (defn set-last-inner-item-img [items]
   (when (> (count items) 0)
-    (assoc-in items [(.indexOf items (last items)) 1 4 1 :src] "/assets/tbl_vjoin_end.png")
-    (assoc-in items [(.indexOf items (last items)) 1 1 1 :style] "background-color: white")))
+    (-> items
+        (assoc-in [(.indexOf items (last items)) 1 4 1 :src] "/assets/tbl_vjoin_end.png")
+        (assoc-in [(.indexOf items (last items)) 1 1 :style] "background-color: white; background-image: url(/assets/tbl_bck100.png)"))))
 
 (def menu
   [:div
@@ -207,7 +208,9 @@
 
 (defn profile-page [resource menu]
   (let [prl (profile resource)]
-    (with-meta (assoc-in menu [(.indexOf menu (last menu)) (.indexOf (last menu) [:div {:class "profile"}]) 2] prl) {:title (get resource :resourceType)})))
+    (-> menu
+        (assoc-in [(.indexOf menu (last menu)) (.indexOf (last menu) [:div {:class "profile"}]) 2] prl)
+        (with-meta {:title (get resource :resourceType)}))))
 
 (defn profile-page->html [resource]
   (let [page-title (meta (profile-page resource menu))
