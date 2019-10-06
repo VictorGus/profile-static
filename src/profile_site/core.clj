@@ -9,6 +9,7 @@
             [profile-site.views :as psv]
             [profile-site.style :as pss]
             [clojure.java.io :as io]
+            [profile-site.utils :refer :all]
             [clj-yaml.core :as yaml]))
 
 (defn get-data [path]
