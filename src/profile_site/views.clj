@@ -2,7 +2,7 @@
   (:require [garden.core :as gc]
             [hiccup.core :as hc]
             [profile-site.style :as pss]
-            [profile-site.utils :as psu]))
+            [profile-site.utils :refer :all]))
 
 (defn layout [title & content]
   (hc/html [:html
@@ -12,24 +12,19 @@
              [:title title]]
             [:body content]]))
 
-(defn attr-required? [attr profile]
-  (get-in profile (vec (cons :attrs (-> attr
-                                        (concat [:isRequired])
-                                        (vec))))))
-
-(defn get-cardinality [attr profile]
+(defn get-cardinality [attr]
   (cond
-    (or (= (last attr) :identifier) (= (last attr) :name) (= (last attr) :address)
-        (= (last attr) :given))
-    (if (attr-required? attr profile)
+    (or (= (keyword (*get attr :attr)) :identifier) (= (keyword (*get attr :attr)) :name) (= (keyword (*get attr :attr)) :address)
+        (= (keyword (*get attr :attr)) :given))
+    (if (*get attr :isRequired)
       "1..*"
       "0..*")
-    (or (= (last attr) :gender) (= (last attr) :system) (= (last attr) :value)
-        (= (last attr) :birthDate) (= (last attr) :use) (= (last attr) :kladr)
-        (= (last attr) :district) (= (last attr) :city) (= (last attr) :line)
-        (= (last attr) :active) (= (last attr) :family) (= (last attr) :telecom)
-        (= (last attr) :seria))
-    (if (attr-required? attr profile)
+    (or (= (keyword (*get attr :attr)) :gender) (= (keyword (*get attr :attr)) :system) (= (keyword (*get attr :attr)) :value)
+        (= (keyword (*get attr :attr)) :birthDate) (= (keyword (*get attr :attr)) :use) (= (keyword (*get attr :attr)) :kladr)
+        (= (keyword (*get attr :attr)) :district) (= (keyword (*get attr :attr)) :city) (= (keyword (*get attr :attr)) :line)
+        (= (keyword (*get attr :attr)) :active) (= (keyword (*get attr :attr)) :family) (= (keyword (*get attr :attr)) :telecom)
+        (= (keyword (*get attr :attr)) :seria))
+    (if (*get attr :isRequired)
       "1..1"
       "0..1")
     :else nil))
@@ -39,13 +34,11 @@
                                         (concat [:type])
                                         (vec))))))
 
-(defn get-icon [attr profile]
+(defn get-icon [attr]
   (cond
-    (or (= (last attr) :address) (= (last attr) :identifier) (= (last attr) :name))
+    (or (= (keyword (*get-in attr [0 :attr])) :address) (= (keyword (*get-in attr [0 :attr])) :identifier) (= (keyword (*get-in attr [0 :attr])) :name))
     "/assets/icon_datatype.gif"
-    (-> profile
-        (get-in attr)
-        (get :attrs))
+    (> (count (*get attr 1)) 0)
     "/assets/icon_element.gif"
     :else "/assets/icon_primitive.png"))
 
@@ -58,7 +51,9 @@
                                                     (map #(assoc-in % [1 3 1 :src] "/assets/tbl_blank.png"))
                                                     (concat [:tbody outer-item])
                                                     (vec)))
-        (assoc-in [(.indexOf items last-item) 1 1 3 1 :src] "/assets/tbl_vjoin_end.png")
+        (assoc-in (conj ((comp vec cons) (.indexOf items last-item) (vector-first-path #(= % {:src "/assets/tbl_vjoin.png",
+                                                                                               :style "vertical-align: top; background-color: white;"}) last-item)) :src)
+                   "/assets/tbl_vjoin_end.png")
         (assoc-in [(.indexOf items last-item) 1 1 1 :style] (when (> (count (rest last-item)) 1)
                                                               "background-image: url(/assets/tbl_bck010.png)")))))
 
@@ -104,12 +99,70 @@
 
 (defn home-page []
   (let [hm [:h1 "Home page"]]
-    (with-meta (assoc-in menu psu/vector-first-path #(= % {:class "profile"}) hm) {:title "Home"})))
+    (with-meta (assoc-in menu (vector-first-path #(= {:class "profile"} %) menu) hm) {:title "Home"})))
 
 (defn home-page->html []
   (let [page-title (meta (home-page))
         hm-page (home-page)]
     (layout (:title page-title) hm-page)))
+
+(defn outter-attrs-into-hc [profile]
+  (set-last-item-img (vec (map (fn [itm]
+                                [:tbody [:tr
+                                         [:td (assoc {:class "line-item"} :style (when (> (count itm) 2)
+                                                                                   "background-image: url(/assets/tbl_bck11.png)"))
+                                          [:img {:src "/assets/tbl_spacer.png"
+                                                 :style "vertical-align: top; background-color: white;"}]
+                                          [:img {:src "/assets/tbl_vjoin.png"
+                                                 :style "vertical-align: top; background-color: white;"}]
+                                          [:img {:src (get-icon itm)
+                                                 :class "table-icon"}]
+                                          [:a (*get-in itm [0 :attr])]]
+                                         [:td {:class "line-item"}
+                                          [:span {:class "flag-item"}
+                                           "S"]]
+                                         (let [card (get-cardinality (*get itm 0))]
+                                           (if (or (= card "1..1") (= card "1..*"))
+                                             [:td {:class "line-item"}
+                                              card]
+                                             [:td {:class "line-item"
+                                                   :style "opacity: 0.4"}
+                                              card]))
+                                         [:td {:class "line-item"
+                                               :style "opacity: 0.4"}
+                                          (*get-in itm [0 :type])]
+                                         [:td {:class "line-item"} [:a (*get-in itm [0 :desc])]]]]) (get-profile-attrs profile)))))
+
+(defn inner-items-into-hc [itm]
+  (loop [attr itm
+         res []]
+    (if(> (count attr) 0) (recur (rest attr)
+                                    (concat res [:tr
+                                                [:td {:class "line-inner-item"}
+                                                 [:img {:src "/assets/tbl_spacer.png"
+                                                        :style "vertical-align: top"}]
+                                                 [:img {:src "/assets/tbl_vline.png"
+                                                        :style "vertical-align: top; background-color: white"}]
+                                                 [:img {:src "/assets/tbl_vjoin.png"
+                                                        :style "vertical-align: top; background-color: white"}]
+                                                 [:img {:src (get-icon attr)
+                                                        :class "table-icon"}]
+                                                 attr]
+                                                [:td {:class "line-item"}
+                                                 [:span {:class "flag-item"}
+                                                  "S"]]
+                                                (let [card (get-cardinality (*get attr 0))]
+                                                  (if (or (= card "1..1") (= card "1..*"))
+                                                    [:td {:class "line-item"}
+                                                     card]
+                                                    [:td {:class "line-item"
+                                                          :style "opacity: 0.4"}
+                                                     card]))
+                                                [:td {:class "line-item"
+                                                      :style "opacity: 0.4"}
+                                                 (*get-in attr [0 :type])]
+                                                 [:td {:class "line-item"} [:a (*get-in attr [0 :desc])]]]))
+       res)))
 
 (defn profile [{resourceType :resourceType :as resource}]
   (let [prl ^:title (-> [:table
@@ -217,3 +270,53 @@
   (let [page-title (meta (profile-page resource menu))
         pt-page (profile-page resource menu)]
     (layout (:title page-title) pt-page)))
+
+
+
+(comment
+
+
+  (require '[profile-site.core :refer :all])
+
+
+(defn iner-items-into-hc [attrs]
+  (map (fn [attr] (if (sequential? attr)
+                    (iner-items-into-hc attr)
+                   [:tr
+                    [:td {:class "line-inner-item"}
+                     [:img {:src "/assets/tbl_spacer.png"
+                            :style "vertical-align: top"}]
+                     [:img {:src "/assets/tbl_vline.png"
+                            :style "vertical-align: top; background-color: white"}]
+                     [:img {:src "/assets/tbl_vjoin.png"
+                            :style "vertical-align: top; background-color: white"}]
+                     [:img {:src (get-icon attr)
+                            :class "table-icon"}]
+                     attr]
+                    [:td {:class "line-item"}
+                     [:span {:class "flag-item"}
+                      "S"]]
+                    (let [card (get-cardinality (*get attr 0))]
+                      (if (or (= card "1..1") (= card "1..*"))
+                        [:td {:class "line-item"}
+                         card]
+                        [:td {:class "line-item"
+                              :style "opacity: 0.4"}
+                         card]))
+                    [:td {:class "line-item"
+                          :style "opacity: 0.4"}
+                     (*get-in attr [0 :type])]
+                    [:td {:class "line-item"} [:a (*get-in attr [0 :desc])]]])) (*get attrs 1)))
+
+(iner-items-into-hc (*get-in (get-profile-attrs patient-profile) [2]))
+
+(*get-in (get-profile-attrs patient-profile) [2])
+
+  (defn dot-shit [arr]
+    (map #(if (vector? %)
+            (dot-shit %)
+            (inc %)) arr))
+
+  (dot-shit [1 [2 [10 11 12 [40 50 56 [100000 [2 3 4 5 6 7 [8 9 10]]]]]] 3])
+
+  )

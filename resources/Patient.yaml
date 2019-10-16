@@ -65,6 +65,15 @@ attrs:
         isRequired: true
         type: string
         desc: Фамилия пациента
+        attrs:
+          test-property:
+            isRequired: true
+            type: string
+            desc: Test
+            attrs:
+              another-test-property:
+                type: string
+                desc: Test
       given:
         isRequired: true
         type: string
