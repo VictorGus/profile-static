@@ -188,39 +188,8 @@
               (*get itm :type)]
              [:td {:class "line-item"} [:a (*get itm :desc)]]])]
 
-    (map (fn [inner] (if (sequential? inner) (into-hc (first inner)) (into-hc inner)))
+    (map (fn [inner] (if (sequential? inner) (vec (concat (into-hc (first inner)) (inner-attrs->hc inner))) (into-hc inner)))
          (first (rest attr)))))
-
-;; (defn inner-items-into-hc [itm]
-;;   (loop [attr itm
-;;          res []]
-;;     (if(> (count attr) 0) (recur (rest attr)
-;;                                     (concat res [:tr
-;;                                                 [:td {:class "line-inner-item"}
-;;                                                  [:img {:src "/assets/tbl_spacer.png"
-;;                                                         :style "vertical-align: top"}]
-;;                                                  [:img {:src "/assets/tbl_vline.png"
-;;                                                         :style "vertical-align: top; background-color: white"}]
-;;                                                  [:img {:src "/assets/tbl_vjoin.png"
-;;                                                         :style "vertical-align: top; background-color: white"}]
-;;                                                  [:img {:src (get-icon attr)
-;;                                                         :class "table-icon"}]
-;;                                                  attr]
-;;                                                 [:td {:class "line-item"}
-;;                                                  [:span {:class "flag-item"}
-;;                                                   "S"]]
-;;                                                 (let [card (get-cardinality (*get attr 0))]
-;;                                                   (if (or (= card "1..1") (= card "1..*"))
-;;                                                     [:td {:class "line-item"}
-;;                                                      card]
-;;                                                     [:td {:class "line-item"
-;;                                                           :style "opacity: 0.4"}
-;;                                                      card]))
-;;                                                 [:td {:class "line-item"
-;;                                                       :style "opacity: 0.4"}
-;;                                                  (*get-in attr [0 :type])]
-;;                                                  [:td {:class "line-item"} [:a (*get-in attr [0 :desc])]]]))
-;;        res)))
 
 (defn profile [{resourceType :resourceType :as resource}]
   (let [prl ^:title (-> [:table

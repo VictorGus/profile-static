@@ -36,3 +36,7 @@
 (defn get-profile-attrs [{attrs :attrs}]
   (for [itm attrs]
      (get-inner-attrs itm)))
+
+(defn insert-into [coll n v]
+  (let [[first-part second-part] (split-at n coll)]
+    (concat first-part [v] second-part)))
