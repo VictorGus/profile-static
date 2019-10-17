@@ -10,7 +10,9 @@
              [:style (pss/style (pss/set-page-style pss/profile-style pss/navigation-menu-style))]
              [:meta {:charset "utf-8"}]
              [:title title]]
-            [:body content]]))
+            [:body content
+             [:script {:src "/assets/listener.js"}]
+              ]]))
 
 (defn get-cardinality [attr]
   (cond
@@ -59,38 +61,47 @@
         (assoc-in [(.indexOf items (last items)) 1 1 :style] "background-color: white; background-image: url(/assets/tbl_bck100.png)"))))
 
 (def menu
-  [:div
-   [:div {:class "menu"}
-    [:div {:class "logo"}
-     [:img {:class "img-logo"
-            :src "http://www.hl7.org/fhir/us/core/assets/images/fhir-logo-www.png"}]]]
-   [:div {:class "wrap"}
-    [:div {:class "nav"}
-     [:ul {:class "ulmenu"}
-      [:li
-       [:a {:id "list-item"
-            :href "/index.html"} "Главная"]]
-      [:li
-       [:a {:id "list-item"
-            :href "/profiles/index.html"} "Профили Ресурсов"]
-       [:ul {:class "resource-list"}
-        [:li
-         [:a {:id "list-item"
-              :href "/profiles/Patient"} "Пациент (Patient)"]]
-        [:li
-         [:a {:id "list-item"
-              :href "/profiles/Organization"} "Organization"]]
-        [:li
-         [:a {:id "list-item"
-              :href "/profiles/Practitioner"} "Practitioner"]]]]
-      [:li
-       [:a {:id "list-item"
-            :href "/valuesets"} "Терминологии"]
-       [:ul {:class "terminology-list"}
-        [:li
-         [:a {:id "list-item"
-              :href "/valuesets/Patient-identifiers"} "Идентификаторы Пациента"]]]]]]
-    [:div {:class "profile"}]]])
+  [:div {:class "root"}
+   ;;[:script {:src "assets/js/listener.js"}]
+   [:div {:class "common-design"}
+    ;; [:div {:class "heading-segment"}
+    ;;  [:div {:class "heading-logo"}
+    ;;   [:a {:class "logolink" :href "/"}
+    ;;    [:img {:class "fhir-image" :src "http://www.hl7.org/fhir/us/core/assets/images/fhir-logo-www.png"}]]]
+    ;;  [:div {:class "logo-border"}]
+    ;;  [:div {:class "heading-content"}]]
+    [:div {:class "whole-content-body"}
+     [:div {:class "left-side"}
+      [:div {:class "heading-logo"}
+       [:a {:class "logolink" :href "/"}
+        [:img {:class "fhir-image" :src "http://www.hl7.org/fhir/us/core/assets/images/fhir-logo-www.png"}]]]
+      [:div {:class "left-menu"}
+       [:div {:class "lmenu-item"}
+        [:a {:href "/"} "Main Page"]]
+       [:div {:class "lmenu-item dropdown-btn"}
+        [:a ;;{:href "/profiles"}
+         "Profile Pages"]
+        [:svg {:class "drop-down-list-icon" :height "1em" :width "1em" :fill "none" :viewBox "0 0 24 24" :stroke-width "2" :stroke-linecap "round" :stroke "currentColor"}
+         [:g [:polyline {:points "9 18 15 12 9 6"}]]]]
+       [:div {:class "dropdown-container"}
+        [:div {:class "lmenu-item lmenu-add-items"}
+         [:a {:href "/profiles/Patient"} "Patient"]]
+        [:div {:class "lmenu-item lmenu-add-items"}
+         [:a {:href "/profiles/Organization"} "Organization"]]
+        [:div {:class "lmenu-item lmenu-add-items"}
+         [:a {:href "/profiles"} "Practitioner"]]]
+       [:div {:class "lmenu-item dropdown-btn"}
+        [:a ;;{:href "/Terminology"}
+         "Terminology"]
+        [:svg {:class "drop-down-list-icon" :height "1em" :width "1em" :fill "none" :viewBox "0 0 24 24" :stroke-width "2" :stroke-linecap "round" :stroke "currentColor"}
+         [:g [:polyline {:points "9 18 15 12 9 6"}]]]]
+       [:div {:class "dropdown-container"}
+        [:div {:class "lmenu-item lmenu-add-items"}
+         [:a {:href "/"}"Patient Identifiers"]]]]]
+     [:div {:class "body-container"}
+      [:div {:class "body-header"}
+       [:h1 "Resource structure"]]
+      [:div {:class "body-content"}]]]]])
 
 (defn home-page []
   (let [hm [:h1 "Home page"]]
@@ -225,59 +236,12 @@
 (defn profile-page [resource menu]
   (let [prl (profile resource)]
     (-> menu
-        (assoc-in [(.indexOf menu (last menu)) (.indexOf (last menu) [:div {:class "profile"}]) 2] prl)
+        ;;(assoc-in [(.indexOf menu (last menu)) (.indexOf (last menu) [:div {:class "body-content"}]) 2] prl)
+        (assoc-in (vector-first-path #(= % {:class "body-content"}) menu) prl)
+
         (with-meta {:title (get resource :resourceType)}))))
 
 (defn profile-page->html [resource]
   (let [page-title (meta (profile-page resource menu))
         pt-page (profile-page resource menu)]
     (layout (:title page-title) pt-page)))
-
-
-
-(comment
-
-
-  (require '[profile-site.core :refer :all])
-
-(defn iner-items-into-hc [attrs]
-  (map (fn [attr]                                 [:tr
-                                 [:td {:class "line-inner-item"}
-                                  [:img {:src "/assets/tbl_spacer.png"
-                                         :style "vertical-align: top"}]
-                                  [:img {:src "/assets/tbl_vline.png"
-                                         :style "vertical-align: top; background-color: white"}]
-                                  [:img {:src "/assets/tbl_vjoin.png"
-                                         :style "vertical-align: top; background-color: white"}]
-                                  [:img {:src (get-icon attr)
-                                         :class "table-icon"}]
-                                  (*get attr :attr)]
-                                 [:td {:class "line-item"}
-                                  [:span {:class "flag-item"}
-                                   "S"]]
-                                 (let [card (get-cardinality (*get attr 0))]
-                                   (if (or (= card "1..1") (= card "1..*"))
-                                     [:td {:class "line-item"}
-                                      card]
-                                     [:td {:class "line-item"
-                                           :style "opacity: 0.4"}
-                                      card]))
-                                 [:td {:class "line-item"
-                                       :style "opacity: 0.4"}
-                                  (*get-in attr [0 :type])]
-                                 [:td {:class "line-item"} [:a (*get-in attr [0 :desc])]]]) (*get attrs 1)))
-
-(iner-items-into-hc (*get-in (get-profile-attrs patient-profile) [2]))
-
-(*get (*get-in (get-profile-attrs patient-profile) [2]) 1)
-
-(get-profile-attrs patient-profile)
-
-  (defn dot-shit [arr]
-    (map #(if (vector? %)
-            (dot-shit %)
-            (inc %)) arr))
-
-  (dot-shit [1 [2 [10 11 12 [40 50 56 [100000 [2 3 4 5 6 7 [8 9 10]]]]]] 3])
-
-  )

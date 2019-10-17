@@ -26,7 +26,7 @@
      :background-image "url(/assets/tbl_bck110.png)"}]
 
    [:table
-    {:font-size "11px"
+    {:font-size "13px"
      :font-family "verdana"
      :max-width "100%"
      :border-spacing "0px"
@@ -89,42 +89,141 @@
      :box-sizing "border-box"}]])
 
 (def navigation-menu-style
-  [[:.menu
-    {:margin "0px"
-     :padding "10px 40px"
+
+  [[:.heading-segment
+    {:display "flex"
+     :border-bottom "1px solid #d4dadf"}]
+
+   [:.heading-logo
+    {:height "80px"
      :box-shadow "0 3px 8px 0 rgba(116, 129, 141, 0.1)"
      :border-bottom "1px solid #d4dadf"
-     :list-style-position "inside"
-     :height "59px"}]
-   [:.nav
-    {:padding "20px 30px"
-     :min-width "298px"
-     :background "#f5f7f9"
-     :padding-left "0"
-     :padding-top "1px"
-     :width "20px"
-     :height "min-content"
+     :background-color "#FFFFFF"}]
+
+   [:.fhir-image
+    {:float "left"
+     :padding "20px 0px 20px 92px"
+     :height "40px"}]
+
+   [:.heading-logo
+    {;;:border-right "1px solid #e6ecf1"
+     }]
+
+   [:.left-side {:display "block"}]
+
+   [:.logo-border
+    {:margin-top "20px"
+     :width "0"
+     :height "40px"
      :border-right "1px solid #e6ecf1"}]
 
-   [:.resource-list
-    {:padding-left "15px"
-     :padding-top "7px"
-     :margin-left "0px"}]
+   [:.whole-content-body
+    {:font-family "Roboto sans-serif"
+     :display "flex"}]
 
-   [:.terminology-list
-    {:padding-left "15px"
-     :padding-top "7px"
-     :margin-left "0px"}]
+   [:.left-menu
+    {:padding-top "32px"
+     :padding-left "68px";;"calc((100% - 1448px) / 2)"
+     :min-width "298px"
+     :height "100%"
+     :z-index "15"
+     ;;:width "calc((100% - 1448px) / 2 + 298px)"
+     :border-right "1px solid #E6ECF1"
+     :background-color "#f5f7f9"}]
 
-   [:ul
-    {:padding-left "20px"
-     :margin "0px"
-     :width "70%"}]
+   ;; Style the menu links and the dropdown divs */
+   [:.lmenu-item
+    {:margin-left "24px"
+     :padding "7px 24px 7px 16px"
+     :box-sizing "content-box"
+     :position "relative"
+     :font-size "14px"
+     :color "inherit";;"#5C6975"
+     :display "block"
+     :word-break "break-word"
+     :background "none"
+     :border "1px solid transparent"
+     :cursor "pointer"
+     :outline "none"
+     :font-weight "500"
+     :line-height "1.5"}]
 
-   [:li
-    {:margin-bottom "10px"}]
+   [:.lmenu-item [:a
+                  {:allign-items "center"
+                   :width "100%"
+                   :color "#3B454E"
+                   :display "block"
+                   :flex "1"
+                   :font-weight "500"
+                   :vertical-align "middle"}]]
 
-   [:.ulmenu
-    {:padding-inline-start "0px"
-     :padding "7px 24px 5px 16px"
-     :line-height "35px"}]])
+   [:svg
+    {:align-items "center"
+     :height "100%"
+     :color "#9DAAB6"}]
+
+   ;; On mouse-over */
+   [:.lmenu-item:hover {:background-color "#E6ECF1"}]
+
+   [:.lmenu-add-items
+    {:margin-left "45px"
+     :padding-left "10px"
+     :border-left "1px solid #E6ECF1"}]
+
+   [:.lmenu-add-items [:a {:color "#9DAAB6"}]]
+
+   ;;/* Add an active class to the active dropdown div */
+   [:.active
+    {:background-color "white"
+     :border "1px solid #e6ecf1"
+     :border-right "none"
+     :color "#d95640"}]
+
+   [:.active
+    [:a
+     {:color "#d95640"}]]
+
+   [:.dropdown-btn
+    {:display "flex"
+     }]
+
+   [:.dropdown-btn
+    [:a
+     {:width "80%"}]]
+
+   ;; Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+   [:.dropdown-container
+    {:display "none"
+     :color "#9DAAB6";;"#262626"
+     :border-left-color "rgb(230, 236, 241)"}]
+
+   [:.body-container
+    {:margin "0px 88px"
+     :width "50%"         ;;$$
+     :max-width "750px"
+     :min-width "0"
+     }]
+
+   [:h1
+    {:font-size "32px"
+     :margin "0"}]
+
+   [:.body-header
+    {:margin-bottom "32px"
+     :padding "40px 0px"
+     :color "#242A31"
+     :font-weight "500"
+     :line-height "1.5"
+     :border-bottom "2px solid #E6ECF1"}]
+
+   [:.body-content
+    {:margin "0"
+     :padding "0"}]
+
+   [:.heading-logo:after
+    {:border-right "1px solid #d95640"
+     :content "border"
+     :display "flex"
+     :margin-top "25%"
+     :width "50%"}]
+   ])
