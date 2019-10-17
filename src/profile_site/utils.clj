@@ -16,6 +16,9 @@
   (cond (map? m) (get m k)
         (and (sequential? m) (integer? k)) (nth m k nil)))
 
+(defn *get-in [m ks]
+  (reduce *get m ks))
+
 (defn get-inner-attrs [attr]
   (assoc [{:desc (*get-in attr [1 :desc])
            :isRequired (*get-in attr [1 :isRequired])
@@ -29,9 +32,6 @@
               :isRequired (*get-in inner [1 :isRequired])
               :type (*get-in inner [1 :type])
               :attr (name (*get inner 0))}))))
-
-(defn *get-in [m ks]
-  (reduce *get m ks))
 
 (defn get-profile-attrs [{attrs :attrs}]
   (for [itm attrs]

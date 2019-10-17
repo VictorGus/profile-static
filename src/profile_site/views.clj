@@ -29,11 +29,6 @@
       "0..1")
     :else nil))
 
-(defn get-type [attr profile]
-  (get-in profile (vec (cons :attrs (-> attr
-                                        (concat [:type])
-                                        (vec))))))
-
 (defn get-icon [attr]
   (cond
     (or (= (keyword (*get-in attr [0 :attr])) :address) (= (keyword (*get-in attr [0 :attr])) :identifier) (= (keyword (*get-in attr [0 :attr])) :name))
@@ -106,63 +101,126 @@
         hm-page (home-page)]
     (layout (:title page-title) hm-page)))
 
+(defn inner-attrs->hc [attr]
+  (letfn [(into-hc [itm]
+            [:tr
+             [:td {:class "line-inner-item"}
+              [:img {:src "/assets/tbl_spacer.png"
+                     :style "vertical-align: top"}]
+              [:img {:src "/assets/tbl_vline.png"
+                     :style "vertical-align: top; background-color: white"}]
+              [:img {:src "/assets/tbl_vjoin.png"
+                     :style "vertical-align: top; background-color: white"}]
+              [:img {:src (get-icon itm)
+                     :class "table-icon"}]
+              (*get itm :attr)]
+             [:td {:class "line-item"}
+              [:span {:class "flag-item"}
+               "S"]]
+             (let [card (get-cardinality itm)]
+               (if (or (= card "1..1") (= card "1..*"))
+                 [:td {:class "line-item"}
+                  card]
+                 [:td {:class "line-item"
+                       :style "opacity: 0.4"}
+                  card]))
+             [:td {:class "line-item"
+                   :style "opacity: 0.4"}
+              (*get itm :type)]
+             [:td {:class "line-item"} [:a (*get itm :desc)]]])]
+
+    (map (fn [inner] (if (sequential? inner) (into-hc (first inner)) (into-hc inner)))
+         (first (rest attr)))))
+
 (defn outter-attrs-into-hc [profile]
   (set-last-item-img (vec (map (fn [itm]
-                                [:tbody [:tr
-                                         [:td (assoc {:class "line-item"} :style (when (> (count itm) 2)
-                                                                                   "background-image: url(/assets/tbl_bck11.png)"))
-                                          [:img {:src "/assets/tbl_spacer.png"
-                                                 :style "vertical-align: top; background-color: white;"}]
-                                          [:img {:src "/assets/tbl_vjoin.png"
-                                                 :style "vertical-align: top; background-color: white;"}]
-                                          [:img {:src (get-icon itm)
-                                                 :class "table-icon"}]
-                                          [:a (*get-in itm [0 :attr])]]
-                                         [:td {:class "line-item"}
-                                          [:span {:class "flag-item"}
-                                           "S"]]
-                                         (let [card (get-cardinality (*get itm 0))]
-                                           (if (or (= card "1..1") (= card "1..*"))
-                                             [:td {:class "line-item"}
-                                              card]
-                                             [:td {:class "line-item"
-                                                   :style "opacity: 0.4"}
-                                              card]))
-                                         [:td {:class "line-item"
-                                               :style "opacity: 0.4"}
-                                          (*get-in itm [0 :type])]
-                                         [:td {:class "line-item"} [:a (*get-in itm [0 :desc])]]]]) (get-profile-attrs profile)))))
+                                (vec (concat [:tbody [:tr
+                                                      [:td (assoc {:class "line-item"} :style (when (> (count (*get itm 1)) 0)
+                                                                                                "background-image: url(/assets/tbl_bck11.png)"))
+                                                       [:img {:src "/assets/tbl_spacer.png"
+                                                              :style "vertical-align: top; background-color: white;"}]
+                                                       [:img {:src "/assets/tbl_vjoin.png"
+                                                              :style "vertical-align: top; background-color: white;"}]
+                                                       [:img {:src (get-icon itm)
+                                                              :class "table-icon"}]
+                                                       [:a (*get-in itm [0 :attr])]]
+                                                      [:td {:class "line-item"}
+                                                       [:span {:class "flag-item"}
+                                                        "S"]]
+                                                      (let [card (get-cardinality (*get itm 0))]
+                                                        (if (or (= card "1..1") (= card "1..*"))
+                                                          [:td {:class "line-item"}
+                                                           card]
+                                                          [:td {:class "line-item"
+                                                                :style "opacity: 0.4"}
+                                                           card]))
+                                                      [:td {:class "line-item"
+                                                            :style "opacity: 0.4"}
+                                                       (*get-in itm [0 :type])]
+                                                      [:td {:class "line-item"} [:a (*get-in itm [0 :desc])]]]] (set-last-inner-item-img (vec (inner-attrs->hc itm))))))
+                               (get-profile-attrs profile)))))
 
-(defn inner-items-into-hc [itm]
-  (loop [attr itm
-         res []]
-    (if(> (count attr) 0) (recur (rest attr)
-                                    (concat res [:tr
-                                                [:td {:class "line-inner-item"}
-                                                 [:img {:src "/assets/tbl_spacer.png"
-                                                        :style "vertical-align: top"}]
-                                                 [:img {:src "/assets/tbl_vline.png"
-                                                        :style "vertical-align: top; background-color: white"}]
-                                                 [:img {:src "/assets/tbl_vjoin.png"
-                                                        :style "vertical-align: top; background-color: white"}]
-                                                 [:img {:src (get-icon attr)
-                                                        :class "table-icon"}]
-                                                 attr]
-                                                [:td {:class "line-item"}
-                                                 [:span {:class "flag-item"}
-                                                  "S"]]
-                                                (let [card (get-cardinality (*get attr 0))]
-                                                  (if (or (= card "1..1") (= card "1..*"))
-                                                    [:td {:class "line-item"}
-                                                     card]
-                                                    [:td {:class "line-item"
-                                                          :style "opacity: 0.4"}
-                                                     card]))
-                                                [:td {:class "line-item"
-                                                      :style "opacity: 0.4"}
-                                                 (*get-in attr [0 :type])]
-                                                 [:td {:class "line-item"} [:a (*get-in attr [0 :desc])]]]))
-       res)))
+(defn inner-attrs->hc [attr]
+  (letfn [(into-hc [itm]
+            [:tr
+             [:td {:class "line-inner-item"}
+              [:img {:src "/assets/tbl_spacer.png"
+                     :style "vertical-align: top"}]
+              [:img {:src "/assets/tbl_vline.png"
+                     :style "vertical-align: top; background-color: white"}]
+              [:img {:src "/assets/tbl_vjoin.png"
+                     :style "vertical-align: top; background-color: white"}]
+              [:img {:src (get-icon itm)
+                     :class "table-icon"}]
+              (*get itm :attr)]
+             [:td {:class "line-item"}
+              [:span {:class "flag-item"}
+               "S"]]
+             (let [card (get-cardinality itm)]
+               (if (or (= card "1..1") (= card "1..*"))
+                 [:td {:class "line-item"}
+                  card]
+                 [:td {:class "line-item"
+                       :style "opacity: 0.4"}
+                  card]))
+             [:td {:class "line-item"
+                   :style "opacity: 0.4"}
+              (*get itm :type)]
+             [:td {:class "line-item"} [:a (*get itm :desc)]]])]
+
+    (map (fn [inner] (if (sequential? inner) (into-hc (first inner)) (into-hc inner)))
+         (first (rest attr)))))
+
+;; (defn inner-items-into-hc [itm]
+;;   (loop [attr itm
+;;          res []]
+;;     (if(> (count attr) 0) (recur (rest attr)
+;;                                     (concat res [:tr
+;;                                                 [:td {:class "line-inner-item"}
+;;                                                  [:img {:src "/assets/tbl_spacer.png"
+;;                                                         :style "vertical-align: top"}]
+;;                                                  [:img {:src "/assets/tbl_vline.png"
+;;                                                         :style "vertical-align: top; background-color: white"}]
+;;                                                  [:img {:src "/assets/tbl_vjoin.png"
+;;                                                         :style "vertical-align: top; background-color: white"}]
+;;                                                  [:img {:src (get-icon attr)
+;;                                                         :class "table-icon"}]
+;;                                                  attr]
+;;                                                 [:td {:class "line-item"}
+;;                                                  [:span {:class "flag-item"}
+;;                                                   "S"]]
+;;                                                 (let [card (get-cardinality (*get attr 0))]
+;;                                                   (if (or (= card "1..1") (= card "1..*"))
+;;                                                     [:td {:class "line-item"}
+;;                                                      card]
+;;                                                     [:td {:class "line-item"
+;;                                                           :style "opacity: 0.4"}
+;;                                                      card]))
+;;                                                 [:td {:class "line-item"
+;;                                                       :style "opacity: 0.4"}
+;;                                                  (*get-in attr [0 :type])]
+;;                                                  [:td {:class "line-item"} [:a (*get-in attr [0 :desc])]]]))
+;;        res)))
 
 (defn profile [{resourceType :resourceType :as resource}]
   (let [prl ^:title (-> [:table
@@ -190,72 +248,7 @@
                            [:td {:class "line-item"
                                  :style "opacity: 0.4"} "0..*"]]]]
 
-                        (concat (set-last-item-img (vec (for [item (vec (keys (:attrs resource)))]
-                                                          (vec (-> [:tbody [:tr
-                                                                            [:td (assoc {:class "line-item"} :style (when (->> item
-                                                                                                                               (get (:attrs resource))
-                                                                                                                               (:attrs))
-                                                                                                                      "background-image: url(/assets/tbl_bck11.png)"))
-                                                                             [:img {:src "/assets/tbl_spacer.png"
-                                                                                    :style "vertical-align: top; background-color: white;"}]
-                                                                             [:img {:src "/assets/tbl_vjoin.png"
-                                                                                    :style "vertical-align: top; background-color: white;"}]
-                                                                             [:img {:src (get-icon [:attrs item] resource)
-                                                                                    :class "table-icon"}]
-                                                                             [:a item]]
-                                                                            [:td {:class "line-item"}
-                                                                             [:span {:class "flag-item"}
-                                                                              "S"]]
-                                                                            (let [card (get-cardinality [item] resource)]
-                                                                              (if (or (= card "1..1") (= card "1..*"))
-                                                                                [:td {:class "line-item"}
-                                                                                 card]
-                                                                                [:td {:class "line-item"
-                                                                                      :style "opacity: 0.4"}
-                                                                                 card]))
-                                                                            [:td {:class "line-item"
-                                                                                  :style "opacity: 0.4"}
-                                                                             (get-type [item] resource)]
-                                                                            [:td {:class "line-item"} [:a (-> resource
-                                                                                                              (:attrs)
-                                                                                                              (get item)
-                                                                                                              (get :desc))]]]]
-
-                                                                   (concat (set-last-inner-item-img (vec (for [inner (->> item
-                                                                                                                          (get (:attrs resource))
-                                                                                                                          (:attrs)
-                                                                                                                          (keys)
-                                                                                                                          (vec))]
-                                                                                                           [:tr
-                                                                                                            [:td {:class "line-inner-item"}
-                                                                                                             [:img {:src "/assets/tbl_spacer.png"
-                                                                                                                    :style "vertical-align: top"}]
-                                                                                                             [:img {:src "/assets/tbl_vline.png"
-                                                                                                                    :style "vertical-align: top; background-color: white"}]
-                                                                                                             [:img {:src "/assets/tbl_vjoin.png"
-                                                                                                                    :style "vertical-align: top; background-color: white"}]
-                                                                                                             [:img {:src (get-icon [:attrs item inner] resource)
-                                                                                                                    :class "table-icon"}]
-                                                                                                             inner]
-                                                                                                            [:td {:class "line-item"}
-                                                                                                             [:span {:class "flag-item"}
-                                                                                                              "S"]]
-                                                                                                            (let [card (get-cardinality [item :attrs inner] resource)]
-                                                                                                              (if (or (= card "1..1") (= card "1..*"))
-                                                                                                                [:td {:class "line-item"}
-                                                                                                                 card]
-                                                                                                                [:td {:class "line-item"
-                                                                                                                      :style "opacity: 0.4"}
-                                                                                                                 card]))
-                                                                                                            [:td {:class "line-item"
-                                                                                                                  :style "opacity: 0.4"}
-                                                                                                             (get-type [item :attrs inner] resource)]
-                                                                                                            [:td {:class "line-item"} [:a (-> resource
-                                                                                                                                              (:attrs)
-                                                                                                                                              (get item)
-                                                                                                                                              (:attrs)
-                                                                                                                                              (get inner)
-                                                                                                                                              (get :desc))]]]))))))))))
+                        (concat (outter-attrs-into-hc resource))
                         (vec))]
     (with-meta prl {:title resourceType})
     prl))
@@ -278,39 +271,38 @@
 
   (require '[profile-site.core :refer :all])
 
-
 (defn iner-items-into-hc [attrs]
-  (map (fn [attr] (if (sequential? attr)
-                    (iner-items-into-hc attr)
-                   [:tr
-                    [:td {:class "line-inner-item"}
-                     [:img {:src "/assets/tbl_spacer.png"
-                            :style "vertical-align: top"}]
-                     [:img {:src "/assets/tbl_vline.png"
-                            :style "vertical-align: top; background-color: white"}]
-                     [:img {:src "/assets/tbl_vjoin.png"
-                            :style "vertical-align: top; background-color: white"}]
-                     [:img {:src (get-icon attr)
-                            :class "table-icon"}]
-                     attr]
-                    [:td {:class "line-item"}
-                     [:span {:class "flag-item"}
-                      "S"]]
-                    (let [card (get-cardinality (*get attr 0))]
-                      (if (or (= card "1..1") (= card "1..*"))
-                        [:td {:class "line-item"}
-                         card]
-                        [:td {:class "line-item"
-                              :style "opacity: 0.4"}
-                         card]))
-                    [:td {:class "line-item"
-                          :style "opacity: 0.4"}
-                     (*get-in attr [0 :type])]
-                    [:td {:class "line-item"} [:a (*get-in attr [0 :desc])]]])) (*get attrs 1)))
+  (map (fn [attr]                                 [:tr
+                                 [:td {:class "line-inner-item"}
+                                  [:img {:src "/assets/tbl_spacer.png"
+                                         :style "vertical-align: top"}]
+                                  [:img {:src "/assets/tbl_vline.png"
+                                         :style "vertical-align: top; background-color: white"}]
+                                  [:img {:src "/assets/tbl_vjoin.png"
+                                         :style "vertical-align: top; background-color: white"}]
+                                  [:img {:src (get-icon attr)
+                                         :class "table-icon"}]
+                                  (*get attr :attr)]
+                                 [:td {:class "line-item"}
+                                  [:span {:class "flag-item"}
+                                   "S"]]
+                                 (let [card (get-cardinality (*get attr 0))]
+                                   (if (or (= card "1..1") (= card "1..*"))
+                                     [:td {:class "line-item"}
+                                      card]
+                                     [:td {:class "line-item"
+                                           :style "opacity: 0.4"}
+                                      card]))
+                                 [:td {:class "line-item"
+                                       :style "opacity: 0.4"}
+                                  (*get-in attr [0 :type])]
+                                 [:td {:class "line-item"} [:a (*get-in attr [0 :desc])]]]) (*get attrs 1)))
 
 (iner-items-into-hc (*get-in (get-profile-attrs patient-profile) [2]))
 
-(*get-in (get-profile-attrs patient-profile) [2])
+(*get (*get-in (get-profile-attrs patient-profile) [2]) 1)
+
+(get-profile-attrs patient-profile)
 
   (defn dot-shit [arr]
     (map #(if (vector? %)
