@@ -22,17 +22,29 @@
 (defn patient-page [request]
   {:status 200
    :headers {"Content-type" "text/html"}
-   :body (psv/profile-page->html patient-profile)})
+   :body (let [ptn (psv/profile-page->html patient-profile)]
+           (spit (io/file "./patient.html") (-> ptn
+                                                (clojure.string/replace #"/assets" "./assets")
+                                                (clojure.string/replace #"core./assets/images" "core/assets/images")))
+           ptn)})
 
 (defn organization-page [request]
   {:status 200
    :headers {"Content-type" "text/html"}
-   :body (psv/profile-page->html organization-profile)})
+   :body (let [org (psv/profile-page->html organization-profile)]
+           (spit (io/file "./organization.html") (-> org
+                                                     (clojure.string/replace #"/assets" "./assets")
+                                                     (clojure.string/replace #"core./assets/images" "core/assets/images")))
+           org)})
 
 (defn home-page [request]
   {:status 200
    :headers {"Content-type" "text/html"}
-   :body (psv/home-page->html)})
+   :body (let [hm (psv/home-page->html)]
+           (spit (io/file "./index.html") (-> hm
+                                              (clojure.string/replace #"/assets" "./assets")
+                                              (clojure.string/replace #"core./assets/images" "core/assets/images")))
+           hm)})
 
 (defroutes app
   (GET "/" [] #'home-page)
