@@ -89,10 +89,10 @@
      :box-sizing "border-box"}]])
 
 (def navigation-menu-style
-
-  [[:.heading-segment
-    {:display "flex"
-     :border-bottom "1px solid #d4dadf"}]
+  [
+  ;; [:.heading-segment
+  ;;   {:display "flex"
+  ;;    :border-bottom "1px solid #d4dadf"}]
 
    [:.heading-logo
     {:height "80px"
@@ -101,21 +101,20 @@
      :background-color "#FFFFFF"}]
 
    [:.fhir-image
-    {:float "left"
-     :padding "20px 0px 20px 92px"
+    {:padding "20px 0px 20px 92px"
      :height "40px"}]
 
-   [:.heading-logo
-    {;;:border-right "1px solid #e6ecf1"
-     }]
+   ;; [:.heading-logo
+   ;;  {;;:border-right "1px solid #e6ecf1"
+   ;;   }]
 
    [:.left-side {:display "block"}]
 
-   [:.logo-border
-    {:margin-top "20px"
-     :width "0"
-     :height "40px"
-     :border-right "1px solid #e6ecf1"}]
+   ;; [:.logo-border
+   ;;  {:margin-top "20px"
+   ;;   :width "0"
+   ;;   :height "40px"
+   ;;   :border-right "1px solid #e6ecf1"}]
 
    [:.whole-content-body
     {:font-family "Roboto sans-serif"
@@ -126,7 +125,6 @@
      :padding-left "68px";;"calc((100% - 1448px) / 2)"
      :min-width "298px"
      :height "100%"
-     :z-index "15"
      ;;:width "calc((100% - 1448px) / 2 + 298px)"
      :border-right "1px solid #E6ECF1"
      :background-color "#f5f7f9"}]
@@ -136,7 +134,6 @@
     {:margin-left "24px"
      :padding "7px 24px 7px 16px"
      :box-sizing "content-box"
-     :position "relative"
      :font-size "14px"
      :color "inherit";;"#5C6975"
      :display "block"
@@ -144,22 +141,19 @@
      :background "none"
      :border "1px solid transparent"
      :cursor "pointer"
-     :outline "none"
      :font-weight "500"
      :line-height "1.5"}]
 
    [:.lmenu-item [:a
-                  {:allign-items "center"
-                   :width "100%"
+                  {:width "100%"
                    :color "#3B454E"
-                   :display "block"
                    :flex "1"
-                   :font-weight "500"
-                   :vertical-align "middle"}]]
+                   :font-weight "500"}]]
 
-   [:svg
+   [:.dropdown-btn [:svg
     {:align-items "center"
-     :color "#9DAAB6"}]
+     :color "#9DAAB6"
+     :font-size "18px"}]]
 
    ;; On mouse-over */
    [:.lmenu-item:hover {:background-color "#E6ECF1"}]
@@ -183,25 +177,19 @@
      {:color "#d95640"}]]
 
    [:.dropdown-btn
-    {:display "flex"
-     }]
+    {:display "flex"}]
 
-   [:.dropdown-btn
-    [:a
-     {:width "80%"}]]
-
-   ;; Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+   ;; Dropdown container (hidden by default).
    [:.dropdown-container
     {:display "none"
-     :color "#9DAAB6";;"#262626"
+     :color "#9DAAB6"
      :border-left-color "rgb(230, 236, 241)"}]
 
    [:.body-container
     {:margin "0px 88px"
      :width "50%"         ;;$$
      :max-width "750px"
-     :min-width "0"
-     }]
+     :min-width "0"}]
 
    [:h1
     {:font-size "32px"
