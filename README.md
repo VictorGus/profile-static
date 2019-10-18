@@ -8,4 +8,4 @@ lein run
 ```
 After those steps you can access this site on your localhost:3000
 
-Also you can acces of it on https://victorgus.github.io/FHIR-RU-PROFILE.github.io/
+Also you can access the draft version of it on https://victorgus.github.io/FHIR-RU-PROFILE.github.io/
