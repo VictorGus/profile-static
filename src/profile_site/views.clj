@@ -197,9 +197,18 @@
              [:td {:class "line-item"
                    :style "opacity: 0.4"}
               (*get itm :type)]
-             [:td {:class "line-item"} [:a (*get itm :desc)]]])]
+             [:td {:class "line-item"} [:a (*get itm :desc)]]])
 
-    (map (fn [inner] (if (sequential? inner) (vec (concat (into-hc (first inner)) (inner-attrs->hc inner))) (into-hc inner)))
+          (into-hc-comp [itm]
+            (let [tr-hc (into-hc itm)]
+              (assoc-in tr-hc (conj (vector-first-path #(= % {:class "line-inner-item"}) tr-hc) :style) "background-image: url(/assets/tbl_bck111.png)")))
+
+          (add-vline [itm]
+            (insert-into (*get itm 1) 2
+                         [:img {:src "/assets/tbl_vline.png"
+                                :style "vertical-align: top; background-color: white"}]))]
+
+    (map (fn [inner] (if (sequential? inner) (vec (concat (into-hc-comp (first inner)) (inner-attrs->hc inner))) (into-hc inner)))
          (first (rest attr)))))
 
 (defn profile [{resourceType :resourceType :as resource}]

@@ -159,7 +159,6 @@
 
    [:svg
     {:align-items "center"
-     :height "100%"
      :color "#9DAAB6"}]
 
    ;; On mouse-over */
