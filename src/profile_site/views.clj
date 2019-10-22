@@ -72,9 +72,10 @@
     ;;  [:div {:class "heading-content"}]]
     [:div {:class "whole-content-body"}
      [:div {:class "left-side"}
+      [:div.heading
       [:div {:class "heading-logo"}
        [:a {:class "logolink" :href "/"}
-        [:img {:class "fhir-image" :src "http://www.hl7.org/fhir/us/core/assets/images/fhir-logo-www.png"}]]]
+        [:img {:class "fhir-image" :src "http://www.hl7.org/fhir/us/core/assets/images/fhir-logo-www.png"}]]]]
       [:div {:class "left-menu"}
        [:div {:class "lmenu-item"}
         [:a {:href "/"} "Main Page"]]
