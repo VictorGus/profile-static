@@ -10,6 +10,9 @@
                  [compojure "1.6.1"]
                  [hiccup "1.0.5"]
                  [garden "1.3.9"]
-                 [clj-commons/clj-yaml "0.7.0"]]
+                 [clj-commons/clj-yaml "0.7.0"]
+                 [markdown-to-hiccup "0.6.2"]
+                 [markdown-clj "1.10.0"]]
+
   :main profile-site.core
   :repl-options {:init-ns profile-site.core})

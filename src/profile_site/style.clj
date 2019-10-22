@@ -146,6 +146,7 @@
 
    [:.lmenu-item [:a
                   {:width "100%"
+                   :display "block"
                    :color "#3B454E"
                    :flex "1"
                    :font-weight "500"}]]

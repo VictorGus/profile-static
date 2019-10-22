@@ -154,7 +154,7 @@
                        (into-hc inner)))
        (first (rest attr)))))
 
-(defn outter-attrs-into-hc [profile]
+(defn outter-attrs->hc [profile]
   (set-last-item-img (vec (map (fn [itm]
                                 (vec (concat [:tbody [:tr
                                                       [:td (assoc {:class "line-item"} :style (when (> (count (*get itm 1)) 0)
@@ -219,7 +219,9 @@
                          [:img {:src "/assets/tbl_vline.png"
                                 :style "vertical-align: top; background-color: white"}]))]
 
-    (map (fn [inner] (if (sequential? inner) (vec (concat (into-hc-comp (first inner)) (inner-attrs->hc inner))) (into-hc inner)))
+    (map (fn [inner] (if (sequential? inner)
+                       (vec (concat (into-hc-comp (first inner)) (inner-attrs->hc inner)))
+                       (into-hc inner)))
          (first (rest attr)))))
 
 (defn profile [{resourceType :resourceType :as resource}]
@@ -248,7 +250,7 @@
                            [:td {:class "line-item"
                                  :style "opacity: 0.4"} "0..*"]]]]
 
-                        (concat (outter-attrs-into-hc resource))
+                        (concat (outter-attrs->hc resource))
                         (vec))]
     (with-meta prl {:title resourceType})
     prl))

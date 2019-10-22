@@ -8,43 +8,23 @@
             [hiccup.core :as hc]
             [profile-site.views :as psv]
             [profile-site.style :as pss]
-            [clojure.java.io :as io]
             [profile-site.utils :refer :all]
-            [clj-yaml.core :as yaml]))
-
-(defn get-data [path]
-  (slurp (io/resource path)))
-
-(def patient-profile (yaml/parse-string (get-data "Patient.yaml")))
-
-(def organization-profile (yaml/parse-string (get-data "Organization.yaml")))
+            [profile-site.data :as psd]))
 
 (defn patient-page [request]
   {:status 200
    :headers {"Content-type" "text/html"}
-   :body (let [ptn (psv/profile-page->html patient-profile)]
-           (spit (io/file "./patient.html") (-> ptn
-                                                (clojure.string/replace #"/assets" "./assets")
-                                                (clojure.string/replace #"core./assets/images" "core/assets/images")))
-           ptn)})
+   :body (psv/profile-page->html psd/patient-profile)})
 
 (defn organization-page [request]
   {:status 200
    :headers {"Content-type" "text/html"}
-   :body (let [org (psv/profile-page->html organization-profile)]
-           (spit (io/file "./organization.html") (-> org
-                                                     (clojure.string/replace #"/assets" "./assets")
-                                                     (clojure.string/replace #"core./assets/images" "core/assets/images")))
-           org)})
+   :body (psv/profile-page->html psd/organization-profile)})
 
 (defn home-page [request]
   {:status 200
    :headers {"Content-type" "text/html"}
-   :body (let [hm (psv/home-page->html)]
-           (spit (io/file "./index.html") (-> hm
-                                              (clojure.string/replace #"/assets" "./assets")
-                                              (clojure.string/replace #"core./assets/images" "core/assets/images")))
-           hm)})
+   :body (psv/home-page->html)})
 
 (defroutes app
   (GET "/" [] #'home-page)
