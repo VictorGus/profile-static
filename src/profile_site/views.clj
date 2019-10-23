@@ -61,45 +61,46 @@
         (assoc-in [(.indexOf items (last items)) 1 1 1 :style] "background-color: white; background-image: url(/assets/tbl_bck100.png)"))))
 
 (def menu
-  [:div {:class "root"}
+  [:div.root
    ;;[:script {:src "assets/js/listener.js"}]
-   [:div {:class "common-design"}
-    ;; [:div {:class "heading-segment"}
-    ;;  [:div {:class "heading-logo"}
-    ;;   [:a {:class "logolink" :href "/"}
-    ;;    [:img {:class "fhir-image" :src "http://www.hl7.org/fhir/us/core/assets/images/fhir-logo-www.png"}]]]
-    ;;  [:div {:class "logo-border"}]
-    ;;  [:div {:class "heading-content"}]]
-    [:div {:class "whole-content-body"}
-     [:div {:class "left-side"}
-      [:div {:class "heading-logo"}
-       [:a {:class "logolink" :href "/"}
-        [:img {:class "fhir-image" :src "http://www.hl7.org/fhir/us/core/assets/images/fhir-logo-www.png"}]]]
-      [:div {:class "left-menu"}
-       [:div {:class "lmenu-item"}
+   [:div.common-design
+    ;; [:div.heading-segment
+    ;;  [:div.heading-logo
+    ;;   [:a.logolink {:href "/"}
+    ;;    [:img.fhir-image {:src "http://www.hl7.org/fhir/us/core/assets/images/fhir-logo-www.png"}]]]
+    ;;  [:div.logo-border]
+    ;;  [:div.heading-content]]
+    [:div.whole-content-body
+     [:div.left-side
+      [:div.heading
+      [:div.heading-logo
+       [:a.logolink {:href "/"}
+        [:img.fhir-image {:src "http://www.hl7.org/fhir/us/core/assets/images/fhir-logo-www.png"}]]]]
+      [:div.left-menu
+       [:div.lmenu-item
         [:a {:href "/"} "Main Page"]]
-       [:div {:class "lmenu-item dropdown-btn"}
+       [:div.lmenu-item.dropdown-btn
         [:a ;;{:href "/profiles"}
          "Profile Pages"]
-        [:svg {:class "drop-down-list-icon" :height "1em" :width "1em" :fill "none" :viewBox "0 0 24 24" :stroke-width "2" :stroke-linecap "round" :stroke "currentColor"}
+        [:svg.drop-down-list-icon {:height "1em" :width "1em" :fill "none" :viewBox "0 0 24 24" :stroke-width "2" :stroke-linecap "round" :stroke "currentColor"}
          [:g [:polyline {:points "9 18 15 12 9 6"}]]]]
-       [:div {:class "dropdown-container"}
-        [:div {:class "lmenu-item lmenu-add-items"}
+       [:div.dropdown-container
+        [:div.lmenu-item.lmenu-add-items
          [:a {:href "/profiles/Patient"} "Patient"]]
-        [:div {:class "lmenu-item lmenu-add-items"}
+        [:div.lmenu-item.lmenu-add-items
          [:a {:href "/profiles/Organization"} "Organization"]]
-        [:div {:class "lmenu-item lmenu-add-items"}
+        [:div.lmenu-item.lmenu-add-items
          [:a {:href "/profiles"} "Practitioner"]]]
-       [:div {:class "lmenu-item dropdown-btn"}
+       [:div.lmenu-item.dropdown-btn
         [:a ;;{:href "/Terminology"}
          "Terminology"]
-        [:svg {:class "drop-down-list-icon" :height "1em" :width "1em" :fill "none" :viewBox "0 0 24 24" :stroke-width "2" :stroke-linecap "round" :stroke "currentColor"}
+        [:svg.drop-down-list-icon {:height "1em" :width "1em" :fill "none" :viewBox "0 0 24 24" :stroke-width "2" :stroke-linecap "round" :stroke "currentColor"}
          [:g [:polyline {:points "9 18 15 12 9 6"}]]]]
-       [:div {:class "dropdown-container"}
-        [:div {:class "lmenu-item lmenu-add-items"}
+       [:div.dropdown-container
+        [:div.lmenu-item.lmenu-add-items
          [:a {:href "/"}"Patient Identifiers"]]]]]
-     [:div {:class "body-container"}
-      [:div {:class "body-header"}
+     [:div.body-container
+      [:div.body-header
        [:h1 "Resource structure"]]
       [:div {:class "body-content"}]]]]])
 

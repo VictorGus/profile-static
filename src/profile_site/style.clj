@@ -111,21 +111,30 @@
   ;;   {:display "flex"
   ;;    :border-bottom "1px solid #d4dadf"}]
 
+   [:.heading
+    {:height "59px"
+     :display "block"
+     :border-bottom "1px solid #d4dadf"}]
+
    [:.heading-logo
-    {:height "80px"
-     :box-shadow "0 3px 8px 0 rgba(116, 129, 141, 0.1)"
-     :border-bottom "1px solid #d4dadf"
+    {:margin "19px 0px"
+     :height "40px"
+     ;;:box-shadow "0 3px 8px 0 rgba(116, 129, 141, 0.1)"
+     :border-right "1px solid #E6ECF1"
+     ;;:border-bottom "1px solid #d4dadf"
      :background-color "#FFFFFF"}]
 
    [:.fhir-image
-    {:padding "20px 0px 20px 92px"
+    {;;:padding "20px 0px 20px 92px"
+     :padding-left "92px"
      :height "40px"}]
 
    ;; [:.heading-logo
    ;;  {;;:border-right "1px solid #e6ecf1"
    ;;   }]
 
-   [:.left-side {:display "block"}]
+   [:.left-side
+    {:display "block"}]
 
    ;; [:.logo-border
    ;;  {:margin-top "20px"
@@ -224,11 +233,4 @@
    [:.body-content
     {:margin "0"
      :padding "0"}]
-
-   [:.heading-logo:after
-    {:border-right "1px solid #d95640"
-     :content "border"
-     :display "flex"
-     :margin-top "25%"
-     :width "50%"}]
-   ])
+])
