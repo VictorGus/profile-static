@@ -11,9 +11,6 @@
   [[:.line-item
     {:vertical-align "top"
      :text-align "left"
-     :display "flex"
-     :align-items "center"
-     :flex-direction "row"
      :padding "0px 4px 0px 4px"
      :background-color "white"}]
 
@@ -24,9 +21,6 @@
 
    [:.line-inner-item
     {:vertical-align "top"
-     :align-items "center"
-     :display "flex"
-     :flex-direction "row"
      :text-align "left"
      :padding "0px 4px 0px 4px"
      :background-image "url(/assets/tbl_bck110.png)"}]
@@ -50,7 +44,7 @@
    [:td
     {:line-height "1em"}]
 
-   [:.tbody
+   [:tbody
     {:display "table-row-group"}]
 
    [:.flag-item
@@ -59,16 +53,7 @@
      :color "white"
      :background-color "red"}]
 
-   [:.table
-    {:display "table"}]
-
-   [:.row
-    {:display "table-row"}]
-
-   [:.col
-    {:display "table-cell"}]
-
-   [:.th
+   [:th
     {:vertical-align "top"
      :text-align "left"
      :background-color "white"
@@ -78,8 +63,6 @@
    [:.table-icon
     {:vertical-align "top"
      :margin "0px 2px 0px 0px"
-     :max-width "16px"
-     :max-height "16px"
      :background-color "white"}]
 
    [:body
