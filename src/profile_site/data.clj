@@ -25,3 +25,4 @@
 (into-file "./resources/" (md-summary->hc (get-data "summary.md")) "summary")
 
 (into-file "./resources/" (psv/profile patient-profile) "patient")
+(into-file "./resources/" (psv/profile organization-profile) "organization")
