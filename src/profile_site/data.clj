@@ -23,9 +23,6 @@
        (spit (io/file (str path type ".html")))))
 
 (into-file "./resources/" (md-summary->hc (get-data "summary.md")) "summary")
-<<<<<<< HEAD
-
 (into-file "./resources/" (psv/profile patient-profile) "patient")
 (into-file "./resources/" (psv/profile organization-profile) "organization")
-=======
->>>>>>> c1a34285c4cf2eb75f2b5faec0f7966b8fcc16ae
+
