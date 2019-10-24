@@ -2,20 +2,20 @@
 var dropdown = document.getElementsByClassName("dropdown-btn");
 
 for (let i = 0; i < dropdown.length; i++) {
-    dropdown[i].addEventListener("click", function() {
-        var svg = this.getElementsByTagName('svg')[0];
-        this.classList.toggle("active");
-        var dropdownContent = this.nextElementSibling;
-        if (dropdownContent.style.display === "block") {
-            /*if (svg === null) {
-                alert('SVG does not exist!');
-            } else {*/
-            svg.setAttribute("transform", "rotate(0)");
-            dropdownContent.style.display = "none";
-        } else {
-            svg.setAttribute("transform", "rotate(90)");
-            dropdownContent.style.display = "block";
-        }
+  dropdown[i].addEventListener("click", function() {
+    var svg = this.getElementsByTagName('svg')[0];
+    this.classList.toggle("active");
+    var dropdownContent = this.nextElementSibling;
+    if (dropdownContent.style.display === "block") {
+      /*if (svg === null) {
+        alert('SVG does not exist!');
+        } else {*/
+      svg.setAttribute("transform", "rotate(0)");
+      dropdownContent.style.display = "none";
+    } else {
+      svg.setAttribute("transform", "rotate(90)");
+      dropdownContent.style.display = "block";
+    }
   });
 }
 

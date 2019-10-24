@@ -34,10 +34,10 @@
 (defn get-icon [attr]
   (cond
     (or (= (keyword (*get-in attr [0 :attr])) :address) (= (keyword (*get-in attr [0 :attr])) :identifier) (= (keyword (*get-in attr [0 :attr])) :name))
-    "/assets/icon_datatype.gif"
+    "/assets/images/icon_datatype.gif"
     (> (count (*get attr 1)) 0)
-    "/assets/icon_element.gif"
-    :else "/assets/icon_primitive.png"))
+    "/assets/images/icon_element.gif"
+    :else "/assets/images/icon_primitive.png"))
 
 (defn set-last-item-img [items]
   (let [last-item (last items)
@@ -45,20 +45,20 @@
     (-> items
         (assoc-in [(.indexOf items last-item)] (->> last-item
                                                     (filter #(if (= (get-in % [1 1 :class]) "line-inner-item") %))
-                                                    (map #(assoc-in % [1 3 1 :src] "/assets/tbl_blank.png"))
+                                                    (map #(assoc-in % [1 3 1 :src] "/assets/images/tbl_blank.png"))
                                                     (concat [:tbody outer-item])
                                                     (vec)))
-        (assoc-in (conj ((comp vec cons) (.indexOf items last-item) (vector-first-path #(= % {:src "/assets/tbl_vjoin.png",
+        (assoc-in (conj ((comp vec cons) (.indexOf items last-item) (vector-first-path #(= % {:src "/assets/images/tbl_vjoin.png",
                                                                                                :style "vertical-align: top; background-color: white;"}) last-item)) :src)
-                   "/assets/tbl_vjoin_end.png")
+                   "/assets/images/tbl_vjoin_end.png")
         (assoc-in [(.indexOf items last-item) 1 1 1 :style] (when (> (count (rest last-item)) 1)
-                                                              "background-image: url(/assets/tbl_bck010.png)")))))
+                                                              "background-image: url(/assets/bck/tbl_bck010.png)")))))
 
 (defn set-last-inner-item-img [items]
   (when (> (count items) 0)
     (-> items
-        (assoc-in [(.indexOf items (last items)) 1 4 1 :src] "/assets/tbl_vjoin_end.png")
-        (assoc-in [(.indexOf items (last items)) 1 1 :style] "background-color: white; background-image: url(/assets/tbl_bck100.png)"))))
+        (assoc-in [(.indexOf items (last items)) 1 4 1 :src] "/assets/images/tbl_vjoin_end.png")
+        (assoc-in [(.indexOf items (last items)) 1 1 :style] "background-color: white; background-image: url(/assets/bck/tbl_bck100.png)"))))
 
 (def menu
   [:div.root
@@ -117,11 +117,11 @@
   (letfn [(into-hc [itm]
             [:tr
              [:td {:class "line-inner-item"}
-              [:img {:src "/assets/tbl_spacer.png"
+              [:img {:src "/assets/images/tbl_spacer.png"
                      :style "vertical-align: top"}]
-              [:img {:src "/assets/tbl_vline.png"
+              [:img {:src "/assets/images/tbl_vline.png"
                      :style "vertical-align: top; background-color: white"}]
-              [:img {:src "/assets/tbl_vjoin.png"
+              [:img {:src "/assets/images/tbl_vjoin.png"
                      :style "vertical-align: top; background-color: white"}]
               [:img {:src (get-icon itm)
                      :class "table-icon"}]
@@ -143,10 +143,10 @@
 
           (into-hc-comp [itm]
             (let [tr-hc (into-hc itm)]
-              (assoc-in tr-hc (conj (vector-first-path #(= % {:class "line-inner-item"}) tr-hc) :style) "background-image: url(/assets/tbl_bck111.png)")))
+              (assoc-in tr-hc (conj (vector-first-path #(= % {:class "line-inner-item"}) tr-hc) :style) "background-image: url(/assets/bck/tbl_bck111.png)")))
           (add-vline [itm]
             (insert-into (*get itm 1) 2
-                         [:img {:src "/assets/tbl_vline.png"
+                         [:img {:src "/assets/images/tbl_vline.png"
                                 :style "vertical-align: top; background-color: white"}]))]
 
     (map (fn [inner]
@@ -159,10 +159,10 @@
   (set-last-item-img (vec (map (fn [itm]
                                 (vec (concat [:tbody [:tr
                                                       [:td (assoc {:class "line-item"} :style (when (> (count (*get itm 1)) 0)
-                                                                                                "background-image: url(/assets/tbl_bck11.png)"))
-                                                       [:img {:src "/assets/tbl_spacer.png"
+                                                                                                "background-image: url(/assets/bck/tbl_bck11.png)"))
+                                                       [:img {:src "/assets/images/tbl_spacer.png"
                                                               :style "vertical-align: top; background-color: white;"}]
-                                                       [:img {:src "/assets/tbl_vjoin.png"
+                                                       [:img {:src "/assets/images/tbl_vjoin.png"
                                                               :style "vertical-align: top; background-color: white;"}]
                                                        [:img {:src (get-icon itm)
                                                               :class "table-icon"}]
@@ -187,11 +187,11 @@
   (letfn [(into-hc [itm]
             [:tr
              [:td {:class "line-inner-item"}
-              [:img {:src "/assets/tbl_spacer.png"
+              [:img {:src "/assets/images/tbl_spacer.png"
                      :style "vertical-align: top"}]
-              [:img {:src "/assets/tbl_vline.png"
+              [:img {:src "/assets/images/tbl_vline.png"
                      :style "vertical-align: top; background-color: white"}]
-              [:img {:src "/assets/tbl_vjoin.png"
+              [:img {:src "/assets/images/tbl_vjoin.png"
                      :style "vertical-align: top; background-color: white"}]
               [:img {:src (get-icon itm)
                      :class "table-icon"}]
@@ -213,11 +213,11 @@
 
           (into-hc-comp [itm]
             (let [tr-hc (into-hc itm)]
-              (assoc-in tr-hc (conj (vector-first-path #(= % {:class "line-inner-item"}) tr-hc) :style) "background-image: url(/assets/tbl_bck111.png)")))
+              (assoc-in tr-hc (conj (vector-first-path #(= % {:class "line-inner-item"}) tr-hc) :style) "background-image: url(/assets/bck/tbl_bck111.png)")))
 
           (add-vline [itm]
             (insert-into (*get itm 1) 2
-                         [:img {:src "/assets/tbl_vline.png"
+                         [:img {:src "/assets/images/tbl_vline.png"
                                 :style "vertical-align: top; background-color: white"}]))]
 
     (map (fn [inner] (if (sequential? inner)
@@ -244,7 +244,7 @@
                             [:a "Описание и ограничения"]]]
                           [:tr
                            [:td {:class "line-item-resource-type"}
-                            [:img {:src "/assets/icon_element.gif"
+                            [:img {:src "/assets/images/icon_element.gif"
                                    :style "vertical-align: top"}]
                             (get resource :resourceType)]
                            [:td {:class "line-item"} ""]
