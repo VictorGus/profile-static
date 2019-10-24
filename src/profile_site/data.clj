@@ -22,6 +22,6 @@
        hc/html
        (spit (io/file (str path type ".html")))))
 
-(into-file "./resources/public" (md-summary->hc (get-data "summary.md")) "summary")
-(into-file "./resources/public" (psv/profile patient-profile) "patient")
-(into-file "./resources/public" (psv/profile organization-profile) "organization")
+(into-file "./resources/public/" (md-summary->hc (get-data "summary.md")) "summary")
+(into-file "./resources/public/" (psv/profile patient-profile) "patient")
+(into-file "./resources/public/" (psv/profile organization-profile) "organization")
