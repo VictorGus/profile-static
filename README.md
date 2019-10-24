@@ -1,4 +1,4 @@
-# FHIR-RU profile 
+# profile-static
 
 To start
 ```
