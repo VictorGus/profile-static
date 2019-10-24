@@ -29,9 +29,9 @@
      :flex-direction "row"
      :text-align "left"
      :padding "0px 4px 0px 4px"
-     :background-image "url(/assets/tbl_bck110.png)"}]
+     :background-image "url(/assets/tbl_bk110.png)"}]
 
-   [:table
+   [:.table
     {:font-size "13px"
      :font-family "verdana"
      :max-width "100%"
@@ -66,7 +66,8 @@
     {:display "table-row"}]
 
    [:.col
-    {:display "table-cell"}]
+    {:display "table-cell"
+     :padding-right "6px"}]
 
    [:.th
     {:vertical-align "top"

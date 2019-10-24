@@ -48,17 +48,17 @@
                                                     (map #(assoc-in % [1 1 3 1 :src] "/assets/tbl_blank.png"))
                                                     (concat [:div.tbody outer-item])
                                                     (vec)))
-        (assoc-in (conj ((comp vec cons) (.indexOf items last-item) (vector-first-path #(= % {:src "/assets/tbl_vjoin.png",
+        (assoc-in (conj ((comp vec cons) (.indexOf items last-item) (vector-first-path #(= % {:src "/assets/tbl_hline.svg",
                                                                                                :style "vertical-align: top; background-color: white;"}) last-item)) :src)
                    "/assets/tbl_vjoin_end.png")
         (assoc-in [(.indexOf items last-item) 1 1 1 1 :style] (when (> (count (rest last-item)) 1)
-                                                              "background-image: url(/assets/tbl_bck010.png)")))))
+                                                              "background-image: url(/assets/tbl_bk010.png)")))))
 
 (defn set-last-inner-item-img [items]
   (when (> (count items) 0)
     (-> items
         (assoc-in [(.indexOf items (last items)) 1 1 4 1 :src] "/assets/tbl_vjoin_end.png")
-        (assoc-in [(.indexOf items (last items)) 1 1 1 :style] "background-color: white; background-image: url(/assets/tbl_bck100.png)"))))
+        (assoc-in [(.indexOf items (last items)) 1 1 1 :style] "background-color: white; background-image: url(/assets/tbl_bk100.png)"))))
 
 (def menu
   [:div.root
@@ -118,12 +118,14 @@
             [:div.row
              [:div.col
               [:div (assoc {:class "line-inner-item"} :style (when (> (count (*get itm 1)) 0)
-                                                         "background-image: url(/assets/tbl_bck11.png)"))
+                                                         "background-image: url(/assets/tbl_bk11.png)"))
                [:img {:src "/assets/tbl_spacer.png"
                       :style "vertical-align: top; background-color: white;"}]
                [:img {:src "/assets/tbl_vline.svg"
                       :style "vertical-align: top; background-color: white"}]
-               [:img {:src "/assets/tbl_vjoin.png"
+               [:img {:src "/assets/tbl_vline.svg"
+                      :style "vertical-align: top; background-color: white"}]
+               [:img {:src "/assets/tbl_hline.svg"
                       :style "vertical-align: top; background-color: white;"}]
                [:img {:src (get-icon itm)
                       :class "table-icon"}]
@@ -145,11 +147,11 @@
                (*get itm :type)]]
              [:div.col
               [:div.line-item
-               [:a (*get itm :desc)]]]])
+               [:a {:id "desc"} (*get itm :desc)]]]])
 
           (into-hc-comp [itm]
             (let [tr-hc (into-hc itm)]
-              (assoc-in tr-hc (conj (vector-first-path #(= % {:class "line-inner-item"}) tr-hc) :style) "background-image: url(/assets/tbl_bck111.png)")))
+              (assoc-in tr-hc (conj (vector-first-path #(= % {:class "line-inner-item"}) tr-hc) :style) "background-image: url(/assets/tbl_bk111.png)")))
 
           (add-vline [itm]
             (insert-into (*get itm 1) 2
@@ -163,13 +165,16 @@
 
 (defn outter-attrs->hc [profile]
   (set-last-item-img (vec (map (fn [itm]
-                                 (vec (concat [:div.tbody [:div.row
+                                 (vec (concat [:div.tbody [:div.row 
                                                            [:div.col
                                                             [:div (assoc {:class "line-item"} :style (when (> (count (*get itm 1)) 0)
-                                                                                                       "background-image: url(/assets/tbl_bck11.png)"))
+                                                                                                       "background-image: url(/assets/tbl_bk11.png)"))
                                                              [:img {:src "/assets/tbl_spacer.png"
                                                                     :style "vertical-align: top; background-color: white;"}]
-                                                             [:img {:src "/assets/tbl_vjoin.png"
+                                                             [:img {:src "/assets/tbl_vline.svg"
+                                                                    :style "vertical-align: top; background-color: white;"
+                                                                    :id "svg-line"}]
+                                                             [:img {:src "/assets/tbl_hline.svg"
                                                                     :style "vertical-align: top; background-color: white;"}]
                                                              [:img {:src (get-icon itm)
                                                                     :class "table-icon"}]
@@ -191,7 +196,7 @@
                                                              (*get-in itm [0 :type])]]
                                                            [:div.col
                                                             [:div.line-item
-                                                             [:a (*get-in itm [0 :desc])]]]]]  (set-last-inner-item-img (vec (inner-attrs->hc itm))))))
+                                                             [:a {:id "desc"} (*get-in itm [0 :desc])]]]]]  (set-last-inner-item-img (vec (inner-attrs->hc itm))))))
                                (get-profile-attrs profile)))))
 
 (defn profile [{resourceType :resourceType :as resource}]
